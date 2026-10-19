@@ -41,8 +41,8 @@ def ask(question, write=None, con=None):
             messages = messages + [{"role": "assistant", "content": reply},
                                    {"role": "user", "content": f"That query failed: {error}\nFix it. Reply with only the corrected SQL."}]
             continue
-        attempts.append({"sql": sql, "error": None})
-        return {"type": "answer", "question": question, "sql": sql, "table": table, "answer": summarise(table),
+        attempts.append({"sql": content, "error": None})
+        return {"type": "answer", "question": question, "sql": content, "ran_sql": sql, "table": table, "answer": summarise(table),
                 "chart": pick_chart(table), "attempts": attempts}
 
     return {"type": "failed", "question": question, "attempts": attempts,

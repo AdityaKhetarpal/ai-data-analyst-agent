@@ -1,0 +1,34 @@
+{
+  "name": "ai-data-analyst-agent-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "copy-sqljs": "node scripts/copy-sqljs.mjs",
+    "predev": "npm run copy-sqljs",
+    "prebuild": "npm run copy-sqljs",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sql.js": "1.15.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/sql.js": "^1.4.11",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.0",
+    "typescript": "^5",
+    "vitest": "^5.0.3"
+  }
+}
