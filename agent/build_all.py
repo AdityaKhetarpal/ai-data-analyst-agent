@@ -41,6 +41,8 @@ def export_for_website():
         "status": distinct("SELECT DISTINCT status FROM orders ORDER BY 1"),
     }, indent=1, ensure_ascii=False))
     report = json.loads(settings.REPORT.read_text()) if settings.REPORT.exists() else {"summary": None, "records": [], "vague": []}
+    if report.get("summary"):
+        report["summary"] = {k: v for k, v in report["summary"].items() if k != "engine"}   # the website doesn't name the model
     (out / "eval.json").write_text(json.dumps(report, ensure_ascii=False, default=str))
     print("website files written to", out)
 
