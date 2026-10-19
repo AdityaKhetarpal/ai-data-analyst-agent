@@ -1,6 +1,8 @@
 # Run the 40-question test (step 8) with a real AI and publish the score + every answer to the website.
-# Default: the FREE open-source model (no key, no cost). Choose "claude" when running it by hand
-# to use Claude instead (needs the repository secret ANTHROPIC_API_KEY; it is never printed or stored in code).
+# Default: the FREE open-source model running on GitHub's computer (no key, no cost). When running it by hand you can choose:
+#   api    -> an OpenAI-compatible API (repository secret LLM_API_KEY, optional variables LLM_BASE_URL / LLM_MODEL)
+#   claude -> Claude (repository secret ANTHROPIC_API_KEY)
+# Keys are only read from GitHub secrets; they are never printed or stored in the code.
 name: Evaluate
 
 on:
@@ -9,7 +11,7 @@ on:
       engine:
         description: "Which AI writes the SQL"
         type: choice
-        options: [free, claude]
+        options: [free, api, claude]
         default: free
   schedule:
     - cron: "0 4 * * 1"   # Monday 09:30 India time
@@ -24,7 +26,7 @@ concurrency:
 jobs:
   evaluate:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -45,6 +47,9 @@ jobs:
       - name: Run the 40-question test
         env:
           ANTHROPIC_API_KEY: ${{ inputs.engine == 'claude' && secrets.ANTHROPIC_API_KEY || '' }}
+          LLM_API_KEY: ${{ inputs.engine == 'api' && secrets.LLM_API_KEY || '' }}
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
         run: python agent/build_all.py --test
 
       - name: Publish the results

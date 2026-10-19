@@ -11,6 +11,11 @@ TODAY = "2026-10-01"     # the data runs to 30 Sep 2026, so "last month" = Septe
 ROW_LIMIT = 200          # every query is capped at this many rows
 MAX_FIXES = 2            # if a query fails, the AI gets this many tries to correct it
 
-# the AI that writes SQL: Claude if ANTHROPIC_API_KEY is set, otherwise a free open-source coding model
+# the AI that writes SQL (step 6), first one available:
+#   1. any OpenAI-compatible API if LLM_API_KEY is set (e.g. Groq's or Google Gemini's free tier)
+#   2. Claude if ANTHROPIC_API_KEY is set
+#   3. a free open-source coding model that runs on this computer (no key at all)
+API_BASE_URL = "https://api.groq.com/openai/v1"     # override with LLM_BASE_URL
+API_MODEL = "llama-3.3-70b-versatile"               # override with LLM_MODEL
 CLAUDE_MODEL = "claude-haiku-5-5"
-FREE_MODEL = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
+FREE_MODEL = "Qwen/Qwen2.5-Coder-3B-Instruct"

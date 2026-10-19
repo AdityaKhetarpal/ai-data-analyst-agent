@@ -24,6 +24,7 @@ def ask(question, write=None, con=None):
     system = step4_prompt.system_prompt()
     messages = step4_prompt.first_messages(question)
     attempts = []
+    warned = False      # the business-rule warning is given at most once
 
     for attempt in range(1 + settings.MAX_FIXES):
         reply = write(system, messages)
@@ -36,10 +37,15 @@ def ask(question, write=None, con=None):
             if table.empty and attempt < settings.MAX_FIXES:
                 raise ValueError("the query ran but returned no rows. Check text values (they are case-sensitive) and date filters. "
                                  "If no rows really is the right answer, return the same query again.")
+            problem = step5_check_sql.business_check(content)
+            if problem and not warned and attempt < settings.MAX_FIXES:
+                warned = True
+                raise ValueError(problem)
         except ValueError as error:
-            attempts.append({"sql": content, "error": str(error)})
+            message = step5_check_sql.explain_error(str(error))
+            attempts.append({"sql": content, "error": message})
             messages = messages + [{"role": "assistant", "content": reply},
-                                   {"role": "user", "content": f"That query failed: {error}\nFix it. Reply with only the corrected SQL."}]
+                                   {"role": "user", "content": f"That query has a problem: {message}\nFix it. Reply with only the corrected SQL."}]
             continue
         attempts.append({"sql": content, "error": None})
         return {"type": "answer", "question": question, "sql": content, "ran_sql": sql, "table": table, "answer": summarise(table),
@@ -60,9 +66,23 @@ def fmt(value, column=""):
         return "none"
     if isinstance(value, (int, float)):
         money = "inr" in column.lower() or "revenue" in column.lower() or "spend" in column.lower() or "value" in column.lower()
-        text = f"{value:,.2f}" if (isinstance(value, float) and not float(value).is_integer()) else f"{int(value):,}"
+        text = indian(value)
         return ("₹" + text) if money else (text + "%" if "pct" in column.lower() or "rate" in column.lower() else text)
     return str(value)
+
+
+def indian(value):
+    """1234567.8 -> '12,34,567.80' (Indian digit grouping, as on the website)."""
+    whole_number = not isinstance(value, float) or float(value).is_integer()
+    sign, value = ("-" if value < 0 else ""), abs(value)
+    whole, cents = f"{value:.2f}".split(".")
+    head, tail = whole[:-3], whole[-3:]
+    groups = []
+    while len(head) > 2:
+        groups.insert(0, head[-2:])
+        head = head[:-2]
+    text = ",".join(([head] if head else []) + groups + [tail])
+    return sign + (text if whole_number else f"{text}.{cents}")
 
 
 def summarise(table):

@@ -3,6 +3,6 @@ numpy
 sqlglot
 pytest
 # the AI (only one is needed):
-anthropic          # Claude, if you have ANTHROPIC_API_KEY
+anthropic          # Claude, if you have ANTHROPIC_API_KEY (an OpenAI-compatible API needs nothing extra)
 transformers       # the free open-source model (also needs torch)
 accelerate

@@ -24,16 +24,23 @@ COLUMN_NOTES = {
     "discount_pct": "discount on this line, 0-30 (percent)",
 }
 GLOSSARY = [
-    "Today is 2026-10-01. Data runs from 2025-01-01 to 2026-09-30. 'Last month' = September 2026; 'this year' = 2026; 'last year' = 2025.",
+    "Today is 2026-10-01. Data runs from 2025-01-01 to 2026-09-30. 'Last month' = September 2026 only (order_date LIKE '2026-09%'); "
+    "'this year' = 2026; 'last year' = 2025.",
     "Line revenue = quantity * unit_price_inr * (1 - discount_pct / 100.0).",
-    "Revenue (or sales) = sum of line revenue for orders with status IN ('delivered', 'shipped'). Cancelled and returned orders are NOT revenue.",
+    "Revenue (or sales) = sum of line revenue for orders with status IN ('delivered', 'shipped'). Cancelled and returned orders are NOT revenue. "
+    "Every revenue query MUST join orders and filter on status.",
     "Valid orders = orders with status IN ('delivered', 'shipped').",
-    "Average order value (AOV) = revenue / number of valid orders.",
-    "Return rate = returned orders / (all orders that were not cancelled) * 100.",
+    "'Orders' or 'orders placed' with no status mentioned = ALL orders, whatever their status. Same for 'customers who placed an order'.",
+    "Average order value (AOV) = revenue / COUNT(DISTINCT order_id) of valid orders.",
+    "Return rate = returned orders / (all orders that were not cancelled) * 100. Count ORDERS (COUNT(DISTINCT order_id)), not order lines.",
     "Cancellation rate = cancelled orders / all orders * 100.",
     "Units sold = sum of quantity on valid orders.",
     "Delivery time = julianday(delivery_date) - julianday(order_date), in days, for delivered orders.",
+    "city, state and segment are columns of customers (join orders -> customers). category, brand and product_name are columns of products "
+    "(join order_items -> products). status and payment_method are columns of orders.",
     "Months: use substr(order_date, 1, 7) to get 'YYYY-MM'. Percentages are 0-100, not 0-1. Round money to 2 decimals.",
+    "To count things per group and then filter (e.g. customers with more than N orders), use a subquery: "
+    "SELECT COUNT(*) FROM (SELECT ... GROUP BY ... HAVING ...).",
 ]
 
 

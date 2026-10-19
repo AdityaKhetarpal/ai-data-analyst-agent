@@ -113,3 +113,18 @@ def test_answer_key_scores_100(answer_key_ai):
     report = step8_test.run_tests(answer_key_ai)
     assert report["summary"]["execution_accuracy_pct"] == 100.0
     assert report["summary"]["vague_asked_back"] == "5 of 5"
+
+
+def test_error_hint_names_the_right_table():
+    assert "column of customers" in step5_check_sql.explain_error("no such column: o.segment")
+
+
+def test_revenue_without_status_is_sent_back_once(fake_ai):
+    no_status = "```sql\nSELECT SUM(quantity * unit_price_inr) AS revenue_inr FROM order_items\n```"
+    with_status = ("```sql\nSELECT SUM(oi.quantity * oi.unit_price_inr) AS revenue_inr FROM order_items oi "
+                   "JOIN orders o ON o.order_id = oi.order_id WHERE o.status IN ('delivered', 'shipped')\n```")
+    ai = fake_ai([no_status, with_status])
+    result = step7_agent.ask("revenue?", ai)
+    assert len(result["attempts"]) == 2 and "status" in result["attempts"][0]["error"] and "status" in result["sql"]
+    # if the AI insists, the second identical answer is accepted
+    assert step7_agent.ask("revenue?", fake_ai([no_status]))["type"] == "answer"
