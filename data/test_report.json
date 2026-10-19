@@ -1,11 +1,11 @@
 {
  "summary": {
-  "engine": "free model (Qwen2.5-Coder-1.5B-Instruct)",
+  "engine": "free model (Qwen2.5-Coder-3B-Instruct)",
   "questions": 40,
-  "execution_accuracy_pct": 57.5,
-  "first_try_pct": 55.0,
-  "fixed_by_retry": 1,
-  "ran_without_error_pct": 90.0,
+  "execution_accuracy_pct": 80.0,
+  "first_try_pct": 75.0,
+  "fixed_by_retry": 2,
+  "ran_without_error_pct": 100.0,
   "by_level": {
    "easy": {
     "questions": 10,
@@ -13,7 +13,7 @@
    },
    "medium": {
     "questions": 23,
-    "right": 13
+    "right": 22
    },
    "hard": {
     "questions": 7,
@@ -32,10 +32,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(*) AS total_customers\nFROM customers\nLIMIT 200",
+   "sql": "SELECT COUNT(DISTINCT customer_id) AS total_customers\nFROM customers",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(*) AS total_customers\nFROM customers\nLIMIT 200",
+     "sql": "SELECT COUNT(DISTINCT customer_id) AS total_customers\nFROM customers",
      "error": null
     }
    ],
@@ -64,24 +64,24 @@
     ],
     "total_rows": 1
    },
-   "seconds": 40.0
+   "seconds": 145.7
   },
   {
    "id": "q02",
    "level": "easy",
    "question": "How many orders have been placed in total?",
-   "correct": false,
+   "correct": true,
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(*) AS total_orders\nFROM orders\nWHERE\n  status IN ('delivered', 'shipped')\nLIMIT 200",
+   "sql": "SELECT COUNT(*) AS total_orders\nFROM orders",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(*) AS total_orders\nFROM orders\nWHERE\n  status IN ('delivered', 'shipped')\nLIMIT 200",
+     "sql": "SELECT COUNT(*) AS total_orders\nFROM orders",
      "error": null
     }
    ],
-   "answer": "Total orders: 10590",
+   "answer": "Total orders: 12000",
    "chart": null,
    "table": {
     "columns": [
@@ -89,7 +89,7 @@
     ],
     "rows": [
      [
-      10590
+      12000
      ]
     ],
     "total_rows": 1
@@ -106,7 +106,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 27.6
+   "seconds": 71.0
   },
   {
    "id": "q03",
@@ -116,18 +116,18 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(product_id) AS num_products\nFROM products\nWHERE\n  category = 'Electronics'\nLIMIT 200",
+   "sql": "SELECT COUNT(*) AS electronics_products\nFROM products\nWHERE category = 'Electronics'",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(product_id) AS num_products\nFROM products\nWHERE\n  category = 'Electronics'\nLIMIT 200",
+     "sql": "SELECT COUNT(*) AS electronics_products\nFROM products\nWHERE category = 'Electronics'",
      "error": null
     }
    ],
-   "answer": "Num products: 10",
+   "answer": "Electronics products: 10",
    "chart": null,
    "table": {
     "columns": [
-     "num_products"
+     "electronics_products"
     ],
     "rows": [
      [
@@ -148,7 +148,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 27.0
+   "seconds": 73.4
   },
   {
    "id": "q04",
@@ -158,10 +158,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(*) AS cancelled_orders\nFROM orders\nWHERE\n  status = 'cancelled'\nLIMIT 200",
+   "sql": "SELECT COUNT(*) AS cancelled_orders\nFROM orders\nWHERE status = 'cancelled'",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(*) AS cancelled_orders\nFROM orders\nWHERE\n  status = 'cancelled'\nLIMIT 200",
+     "sql": "SELECT COUNT(*) AS cancelled_orders\nFROM orders\nWHERE status = 'cancelled'",
      "error": null
     }
    ],
@@ -190,7 +190,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 26.3
+   "seconds": 73.4
   },
   {
    "id": "q05",
@@ -200,19 +200,19 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  product_name,\n  MAX(list_price_inr) AS max_list_price_inr\nFROM products\nLIMIT 200",
+   "sql": "SELECT product_name, list_price_inr\nFROM products\nORDER BY list_price_inr DESC\nLIMIT 1",
    "attempts": [
     {
-     "sql": "SELECT\n  product_name,\n  MAX(list_price_inr) AS max_list_price_inr\nFROM products\nLIMIT 200",
+     "sql": "SELECT product_name, list_price_inr\nFROM products\nORDER BY list_price_inr DESC\nLIMIT 1",
      "error": null
     }
    ],
-   "answer": "Product name: Power Bank 20000mAh · Max list price: 22499",
+   "answer": "Product name: Power Bank 20000mAh · List price: 22499",
    "chart": null,
    "table": {
     "columns": [
      "product_name",
-     "max_list_price_inr"
+     "list_price_inr"
     ],
     "rows": [
      [
@@ -236,7 +236,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 27.5
+   "seconds": 77.1
   },
   {
    "id": "q06",
@@ -246,18 +246,18 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(*) AS num_customers\nFROM customers\nWHERE\n  city = 'Mumbai'\nLIMIT 200",
+   "sql": "SELECT COUNT(*) AS customers_mumbai\nFROM customers\nWHERE city = 'Mumbai'",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(*) AS num_customers\nFROM customers\nWHERE\n  city = 'Mumbai'\nLIMIT 200",
+     "sql": "SELECT COUNT(*) AS customers_mumbai\nFROM customers\nWHERE city = 'Mumbai'",
      "error": null
     }
    ],
-   "answer": "Num customers: 207",
+   "answer": "Customers mumbai: 207",
    "chart": null,
    "table": {
     "columns": [
-     "num_customers"
+     "customers_mumbai"
     ],
     "rows": [
      [
@@ -278,7 +278,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 26.6
+   "seconds": 74.5
   },
   {
    "id": "q07",
@@ -288,18 +288,18 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(*) AS num_customers\nFROM customers\nWHERE\n  signup_date LIKE '2026%'\nLIMIT 200",
+   "sql": "SELECT COUNT(*) AS customers_signed_up_2026\nFROM customers\nWHERE signup_date LIKE '2026%'",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(*) AS num_customers\nFROM customers\nWHERE\n  signup_date LIKE '2026%'\nLIMIT 200",
+     "sql": "SELECT COUNT(*) AS customers_signed_up_2026\nFROM customers\nWHERE signup_date LIKE '2026%'",
      "error": null
     }
    ],
-   "answer": "Num customers: 442",
+   "answer": "Customers signed up 2026: 442",
    "chart": null,
    "table": {
     "columns": [
-     "num_customers"
+     "customers_signed_up_2026"
     ],
     "rows": [
      [
@@ -320,7 +320,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 27.3
+   "seconds": 78.4
   },
   {
    "id": "q08",
@@ -330,10 +330,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(*) AS upi_orders\nFROM orders\nWHERE\n  payment_method = 'UPI'\nLIMIT 200",
+   "sql": "SELECT COUNT(*) AS upi_orders\nFROM orders\nWHERE payment_method = 'UPI'",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(*) AS upi_orders\nFROM orders\nWHERE\n  payment_method = 'UPI'\nLIMIT 200",
+     "sql": "SELECT COUNT(*) AS upi_orders\nFROM orders\nWHERE payment_method = 'UPI'",
      "error": null
     }
    ],
@@ -362,7 +362,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 26.4
+   "seconds": 74.0
   },
   {
    "id": "q09",
@@ -372,10 +372,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  ROUND(\n    100.0 * SUM(CASE WHEN payment_method = 'Cash on Delivery' THEN 1 ELSE 0 END) / COUNT(*),\n    2\n  ) AS cash_on_delivery_percentage\nFROM orders\nLIMIT 200",
+   "sql": "SELECT ROUND(100.0 * SUM(o.payment_method = 'Cash on Delivery') / COUNT(*), 2) AS cash_on_delivery_percentage\nFROM orders o",
    "attempts": [
     {
-     "sql": "SELECT\n  ROUND(\n    100.0 * SUM(CASE WHEN payment_method = 'Cash on Delivery' THEN 1 ELSE 0 END) / COUNT(*),\n    2\n  ) AS cash_on_delivery_percentage\nFROM orders\nLIMIT 200",
+     "sql": "SELECT ROUND(100.0 * SUM(o.payment_method = 'Cash on Delivery') / COUNT(*), 2) AS cash_on_delivery_percentage\nFROM orders o",
      "error": null
     }
    ],
@@ -404,24 +404,24 @@
     ],
     "total_rows": 1
    },
-   "seconds": 33.5
+   "seconds": 84.4
   },
   {
    "id": "q10",
    "level": "easy",
    "question": "How many orders were placed in each month of 2026?",
-   "correct": true,
+   "correct": false,
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  STRFTIME('%Y-%m', order_date) AS month,\n  COUNT(*) AS orders\nFROM orders\nWHERE\n  order_date LIKE '2026%'\nGROUP BY\n  month\nORDER BY\n  month\nLIMIT 200",
+   "sql": "SELECT substr(o.order_date, 1, 7) AS month, COUNT(*) AS orders\nFROM orders o\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\nGROUP BY month\nORDER BY month",
    "attempts": [
     {
-     "sql": "SELECT\n  STRFTIME('%Y-%m', order_date) AS month,\n  COUNT(*) AS orders\nFROM orders\nWHERE\n  order_date LIKE '2026%'\nGROUP BY\n  month\nORDER BY\n  month\nLIMIT 200",
+     "sql": "SELECT substr(o.order_date, 1, 7) AS month, COUNT(*) AS orders\nFROM orders o\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\nGROUP BY month\nORDER BY month",
      "error": null
     }
    ],
-   "answer": "Orders went from 554 in 2026-01 to 692 in 2026-09 (9 rows).",
+   "answer": "Orders went from 487 in 2026-01 to 622 in 2026-09 (9 rows).",
    "chart": {
     "type": "line",
     "x": "month",
@@ -435,39 +435,39 @@
     "rows": [
      [
       "2026-01",
-      554
+      487
      ],
      [
       "2026-02",
-      547
+      477
      ],
      [
       "2026-03",
-      625
+      556
      ],
      [
       "2026-04",
-      639
+      572
      ],
      [
       "2026-05",
-      609
+      532
      ],
      [
       "2026-06",
-      623
+      553
      ],
      [
       "2026-07",
-      649
+      574
      ],
      [
       "2026-08",
-      636
+      550
      ],
      [
       "2026-09",
-      692
+      622
      ]
     ],
     "total_rows": 9
@@ -502,7 +502,7 @@
     ],
     "total_rows": 9
    },
-   "seconds": 32.2
+   "seconds": 95.4
   },
   {
    "id": "q11",
@@ -512,18 +512,18 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  ROUND(SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )), 2) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2025-01-01' AND '2025-12-31'\nLIMIT 200",
+   "sql": "SELECT ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS total_revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2025%'",
    "attempts": [
     {
-     "sql": "SELECT\n  ROUND(SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )), 2) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2025-01-01' AND '2025-12-31'\nLIMIT 200",
+     "sql": "SELECT ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS total_revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2025%'",
      "error": null
     }
    ],
-   "answer": "Revenue: ₹40,577,026.40",
+   "answer": "Total revenue: ₹4,05,77,026.40",
    "chart": null,
    "table": {
     "columns": [
-     "revenue_inr"
+     "total_revenue_inr"
     ],
     "rows": [
      [
@@ -544,32 +544,32 @@
     ],
     "total_rows": 1
    },
-   "seconds": 51.5
+   "seconds": 107.9
   },
   {
    "id": "q12",
    "level": "medium",
    "question": "What was revenue last month?",
-   "correct": false,
+   "correct": true,
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  ROUND(SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )), 2) AS revenue_last_month_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2026-08-01' AND '2026-09-30'\nLIMIT 200",
+   "sql": "SELECT ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026-09%'",
    "attempts": [
     {
-     "sql": "SELECT\n  ROUND(SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )), 2) AS revenue_last_month_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2026-08-01' AND '2026-09-30'\nLIMIT 200",
+     "sql": "SELECT ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026-09%'",
      "error": null
     }
    ],
-   "answer": "Revenue last month: ₹8,705,959.85",
+   "answer": "Revenue: ₹48,32,996.35",
    "chart": null,
    "table": {
     "columns": [
-     "revenue_last_month_inr"
+     "revenue_inr"
     ],
     "rows": [
      [
-      8705959.85
+      4832996.35
      ]
     ],
     "total_rows": 1
@@ -586,7 +586,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 49.2
+   "seconds": 108.4
   },
   {
    "id": "q13",
@@ -596,22 +596,22 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  ROUND(AVG(line_revenue), 2) AS avg_order_value\nFROM (\n  SELECT\n    SUM(quantity * unit_price_inr * (\n      1 - discount_pct / 100.0\n    )) AS line_revenue\n  FROM order_items AS oi\n  JOIN orders AS o\n    ON o.order_id = oi.order_id\n  WHERE\n    o.status IN ('delivered', 'shipped')\n    AND o.order_date BETWEEN '2026-01-01' AND '2026-12-31'\n) AS subquery\nLIMIT 200",
+   "sql": "SELECT ROUND(AVG(line_revenue), 2) AS average_order_value_inr\nFROM (\n    SELECT oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) AS line_revenue\n    FROM order_items oi\n    JOIN orders o ON o.order_id = oi.order_id\n    WHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\n) AS revenue_per_order",
    "attempts": [
     {
-     "sql": "SELECT\n  ROUND(AVG(line_revenue), 2) AS avg_order_value\nFROM (\n  SELECT\n    SUM(quantity * unit_price_inr * (\n      1 - discount_pct / 100.0\n    )) AS line_revenue\n  FROM order_items AS oi\n  JOIN orders AS o\n    ON o.order_id = oi.order_id\n  WHERE\n    o.status IN ('delivered', 'shipped')\n    AND o.order_date BETWEEN '2026-01-01' AND '2026-12-31'\n) AS subquery\nLIMIT 200",
+     "sql": "SELECT ROUND(AVG(line_revenue), 2) AS average_order_value_inr\nFROM (\n    SELECT oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) AS line_revenue\n    FROM order_items oi\n    JOIN orders o ON o.order_id = oi.order_id\n    WHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\n) AS revenue_per_order",
      "error": null
     }
    ],
-   "answer": "Avg order value: ₹36,096,412.90",
+   "answer": "Average order value: ₹4,391.83",
    "chart": null,
    "table": {
     "columns": [
-     "avg_order_value"
+     "average_order_value_inr"
     ],
     "rows": [
      [
-      36096412.9
+      4391.83
      ]
     ],
     "total_rows": 1
@@ -628,24 +628,24 @@
     ],
     "total_rows": 1
    },
-   "seconds": 54.4
+   "seconds": 118.3
   },
   {
    "id": "q14",
    "level": "medium",
    "question": "What is the revenue for each product category?",
-   "correct": false,
+   "correct": true,
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  p.category,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nGROUP BY\n  p.category\nORDER BY\n  revenue_inr DESC\nLIMIT 200",
+   "sql": "SELECT p.category, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.category\nORDER BY revenue_inr DESC",
    "attempts": [
     {
-     "sql": "SELECT\n  p.category,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nGROUP BY\n  p.category\nORDER BY\n  revenue_inr DESC\nLIMIT 200",
+     "sql": "SELECT p.category, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.category\nORDER BY revenue_inr DESC",
      "error": null
     }
    ],
-   "answer": "Highest revenue: Electronics (₹36,264,318.70). 7 rows.",
+   "answer": "Highest revenue: Electronics (₹3,18,75,746.95). 7 rows.",
    "chart": {
     "type": "bar",
     "x": "category",
@@ -659,31 +659,31 @@
     "rows": [
      [
       "Electronics",
-      36264318.7
+      31875746.95
      ],
      [
       "Home & Kitchen",
-      17582067.5
+      15504231.4
      ],
      [
       "Sports",
-      13810737.25
+      12159913.15
      ],
      [
       "Fashion",
-      8882527.5
+      7753002.5
      ],
      [
       "Beauty",
-      5030066.3
+      4427054.95
      ],
      [
       "Grocery",
-      3535202.7
+      3151804.4
      ],
      [
       "Books",
-      2037316.6
+      1801685.95
      ]
     ],
     "total_rows": 7
@@ -718,7 +718,7 @@
     ],
     "total_rows": 7
    },
-   "seconds": 42.3
+   "seconds": 115.3
   },
   {
    "id": "q15",
@@ -728,14 +728,14 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  p.category,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2026-01-01' AND '2026-12-31'\nGROUP BY\n  p.category\nORDER BY\n  revenue_inr DESC\nLIMIT 1",
+   "sql": "SELECT p.category, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\nGROUP BY p.category\nORDER BY revenue_inr DESC\nLIMIT 1",
    "attempts": [
     {
-     "sql": "SELECT\n  p.category,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2026-01-01' AND '2026-12-31'\nGROUP BY\n  p.category\nORDER BY\n  revenue_inr DESC\nLIMIT 1",
+     "sql": "SELECT p.category, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\nGROUP BY p.category\nORDER BY revenue_inr DESC\nLIMIT 1",
      "error": null
     }
    ],
-   "answer": "Category: Electronics · Revenue: ₹14,924,851.80",
+   "answer": "Category: Electronics · Revenue: ₹1,49,24,851.80",
    "chart": null,
    "table": {
     "columns": [
@@ -762,7 +762,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 54.9
+   "seconds": 120.4
   },
   {
    "id": "q16",
@@ -772,14 +772,14 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  p.product_name,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nGROUP BY\n  p.product_name\nORDER BY\n  revenue_inr DESC\nLIMIT 5",
+   "sql": "SELECT p.product_name, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.product_name\nORDER BY revenue_inr DESC\nLIMIT 5",
    "attempts": [
     {
-     "sql": "SELECT\n  p.product_name,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nGROUP BY\n  p.product_name\nORDER BY\n  revenue_inr DESC\nLIMIT 5",
+     "sql": "SELECT p.product_name, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.product_name\nORDER BY revenue_inr DESC\nLIMIT 5",
      "error": null
     }
    ],
-   "answer": "Highest revenue: Bluetooth Speaker (₹17,309,611.35). 5 rows.",
+   "answer": "Highest revenue: Bluetooth Speaker (₹1,73,09,611.35). 5 rows.",
    "chart": {
     "type": "bar",
     "x": "product_name",
@@ -844,24 +844,28 @@
     ],
     "total_rows": 5
    },
-   "seconds": 47.7
+   "seconds": 114.9
   },
   {
    "id": "q17",
    "level": "medium",
    "question": "What are the top 5 products by units sold?",
-   "correct": false,
+   "correct": true,
    "type": "answer",
-   "tries": 1,
-   "fixed": false,
-   "sql": "SELECT\n  p.product_name,\n  SUM(oi.quantity) AS units_sold\nFROM order_items AS oi\nJOIN products AS p\n  ON p.product_id = oi.product_id\nGROUP BY\n  p.product_name\nORDER BY\n  units_sold DESC\nLIMIT 5",
+   "tries": 2,
+   "fixed": true,
+   "sql": "SELECT p.product_name, SUM(oi.quantity) AS units_sold\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.product_name\nORDER BY units_sold DESC\nLIMIT 5",
    "attempts": [
     {
-     "sql": "SELECT\n  p.product_name,\n  SUM(oi.quantity) AS units_sold\nFROM order_items AS oi\nJOIN products AS p\n  ON p.product_id = oi.product_id\nGROUP BY\n  p.product_name\nORDER BY\n  units_sold DESC\nLIMIT 5",
+     "sql": "SELECT p.product_name, SUM(oi.quantity) AS units_sold\nFROM order_items oi\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.product_name\nORDER BY units_sold DESC\nLIMIT 5",
+     "error": "no such column: o.status. Hint: 'status' is a column of orders; join that table and use its alias."
+    },
+    {
+     "sql": "SELECT p.product_name, SUM(oi.quantity) AS units_sold\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.product_name\nORDER BY units_sold DESC\nLIMIT 5",
      "error": null
     }
    ],
-   "answer": "Highest units sold: Coffee Beans (1602). 5 rows.",
+   "answer": "Highest units sold: Coffee Beans (1425). 5 rows.",
    "chart": {
     "type": "bar",
     "x": "product_name",
@@ -875,23 +879,23 @@
     "rows": [
      [
       "Coffee Beans",
-      1602
+      1425
      ],
      [
       "Cycling Helmet",
-      1456
+      1281
      ],
      [
       "Mystery Novel",
-      1408
+      1247
      ],
      [
       "LED Desk Lamp",
-      1330
+      1194
      ],
      [
       "Bluetooth Speaker",
-      1275
+      1100
      ]
     ],
     "total_rows": 5
@@ -926,7 +930,7 @@
     ],
     "total_rows": 5
    },
-   "seconds": 35.2
+   "seconds": 203.1
   },
   {
    "id": "q18",
@@ -936,19 +940,19 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  c.city,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS total_revenue\nFROM customers AS c\nJOIN orders AS o\n  ON c.customer_id = o.customer_id\nJOIN order_items AS oi\n  ON o.order_id = oi.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nGROUP BY\n  c.city\nORDER BY\n  total_revenue DESC\nLIMIT 1",
+   "sql": "SELECT c.city, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.city\nORDER BY revenue_inr DESC\nLIMIT 1",
    "attempts": [
     {
-     "sql": "SELECT\n  c.city,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS total_revenue\nFROM customers AS c\nJOIN orders AS o\n  ON c.customer_id = o.customer_id\nJOIN order_items AS oi\n  ON o.order_id = oi.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nGROUP BY\n  c.city\nORDER BY\n  total_revenue DESC\nLIMIT 1",
+     "sql": "SELECT c.city, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.city\nORDER BY revenue_inr DESC\nLIMIT 1",
      "error": null
     }
    ],
-   "answer": "City: Delhi · Total revenue: ₹10,264,742.20",
+   "answer": "City: Delhi · Revenue: ₹1,02,64,742.20",
    "chart": null,
    "table": {
     "columns": [
      "city",
-     "total_revenue"
+     "revenue_inr"
     ],
     "rows": [
      [
@@ -970,7 +974,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 46.7
+   "seconds": 118.3
   },
   {
    "id": "q19",
@@ -978,20 +982,16 @@
    "question": "Show revenue by state for 2026.",
    "correct": true,
    "type": "answer",
-   "tries": 2,
-   "fixed": true,
-   "sql": "SELECT\n  c.state,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN customers AS c\n  ON c.customer_id = o.customer_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2026-01-01' AND '2026-12-31'\nGROUP BY\n  c.state\nORDER BY\n  revenue_inr DESC\nLIMIT 200",
+   "tries": 1,
+   "fixed": false,
+   "sql": "SELECT c.state, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\nGROUP BY c.state\nORDER BY revenue_inr DESC",
    "attempts": [
     {
-     "sql": "SELECT p.state, SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date BETWEEN '2026-01-01' AND '2026-12-31'\nGROUP BY p.state\nORDER BY revenue_inr DESC",
-     "error": "no such column: p.state"
-    },
-    {
-     "sql": "SELECT\n  c.state,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN customers AS c\n  ON c.customer_id = o.customer_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2026-01-01' AND '2026-12-31'\nGROUP BY\n  c.state\nORDER BY\n  revenue_inr DESC\nLIMIT 200",
+     "sql": "SELECT c.state, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\nGROUP BY c.state\nORDER BY revenue_inr DESC",
      "error": null
     }
    ],
-   "answer": "Highest revenue: Maharashtra (₹7,780,048.70). 14 rows.",
+   "answer": "Highest revenue: Maharashtra (₹77,80,048.70). 14 rows.",
    "chart": {
     "type": "bar",
     "x": "state",
@@ -1084,34 +1084,74 @@
     ],
     "total_rows": 14
    },
-   "seconds": 112.2
+   "seconds": 123.3
   },
   {
    "id": "q20",
    "level": "medium",
    "question": "Show the monthly revenue trend for 2026.",
-   "correct": false,
-   "type": "failed",
-   "tries": 3,
+   "correct": true,
+   "type": "answer",
+   "tries": 1,
    "fixed": false,
-   "sql": null,
+   "sql": "SELECT strftime('%Y-%m', o.order_date) AS month, SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\nGROUP BY month\nORDER BY month",
    "attempts": [
     {
-     "sql": "SELECT strftime('%Y-%m', order_date) AS month, SUM(line_revenue) AS total_revenue\nFROM (\n    SELECT order_id, SUM(quantity * unit_price_inr * (1 - discount_pct / 100.0)) AS line_revenue\n    FROM order_items\n    JOIN orders o ON o.order_id = order_items.order_id\n    WHERE o.status IN ('delivered', 'shipped')\n    GROUP BY order_id\n) subquery\nWHERE strftime('%Y', order_date) = '2026'\nGROUP BY strftime('%Y-%m', order_date)\nORDER BY strftime('%Y-%m', order_date)",
-     "error": "ambiguous column name: order_id"
-    },
-    {
-     "sql": "SELECT strftime('%Y-%m', order_date) AS month, SUM(line_revenue) AS total_revenue\nFROM (\n    SELECT oi.order_id, SUM(quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) AS line_revenue\n    FROM order_items oi\n    JOIN orders o ON o.order_id = oi.order_id\n    WHERE o.status IN ('delivered', 'shipped')\n    GROUP BY oi.order_id\n) subquery\nWHERE strftime('%Y', order_date) = '2026'\nGROUP BY strftime('%Y-%m', order_date)\nORDER BY strftime('%Y-%m', order_date)",
-     "error": "no such column: order_date"
-    },
-    {
-     "sql": "SELECT strftime('%Y-%m', o.order_date) AS month, SUM(li.line_revenue) AS total_revenue\nFROM order_items li\nJOIN orders o ON o.order_id = li.order_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY strftime('%Y-%m', o.order_date)\nORDER BY strftime('%Y-%m', o.order_date)",
-     "error": "no such column: li.line_revenue"
+     "sql": "SELECT strftime('%Y-%m', o.order_date) AS month, SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%'\nGROUP BY month\nORDER BY month",
+     "error": null
     }
    ],
-   "answer": "I couldn't write a working query after 3 tries. Last error: no such column: li.line_revenue",
-   "chart": null,
-   "table": null,
+   "answer": "Revenue went from ₹31,65,314.80 in 2026-01 to ₹48,32,996.35 in 2026-09 (9 rows).",
+   "chart": {
+    "type": "line",
+    "x": "month",
+    "y": "revenue_inr"
+   },
+   "table": {
+    "columns": [
+     "month",
+     "revenue_inr"
+    ],
+    "rows": [
+     [
+      "2026-01",
+      3165314.8
+     ],
+     [
+      "2026-02",
+      3302638.6
+     ],
+     [
+      "2026-03",
+      4163485.2
+     ],
+     [
+      "2026-04",
+      4210548.9
+     ],
+     [
+      "2026-05",
+      4137902.45
+     ],
+     [
+      "2026-06",
+      4059635.25
+     ],
+     [
+      "2026-07",
+      4350927.85
+     ],
+     [
+      "2026-08",
+      3872963.5
+     ],
+     [
+      "2026-09",
+      4832996.35
+     ]
+    ],
+    "total_rows": 9
+   },
    "expected_sql": "SELECT substr(o.order_date, 1, 7) AS month, SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) FROM order_items oi JOIN orders o ON o.order_id = oi.order_id WHERE o.status IN ('delivered', 'shipped') AND o.order_date LIKE '2026%' GROUP BY month ORDER BY month",
    "expected": {
     "columns": [
@@ -1142,7 +1182,7 @@
     ],
     "total_rows": 9
    },
-   "seconds": 171.2
+   "seconds": 115.4
   },
   {
    "id": "q21",
@@ -1152,10 +1192,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  ROUND(100.0 * SUM(status = 'returned') / SUM(status <> 'cancelled'), 2) AS return_rate_pct\nFROM orders\nLIMIT 200",
+   "sql": "SELECT ROUND(100.0 * SUM(status = 'returned') / SUM(status != 'cancelled'), 2) AS return_rate_pct\nFROM orders",
    "attempts": [
     {
-     "sql": "SELECT\n  ROUND(100.0 * SUM(status = 'returned') / SUM(status <> 'cancelled'), 2) AS return_rate_pct\nFROM orders\nLIMIT 200",
+     "sql": "SELECT ROUND(100.0 * SUM(status = 'returned') / SUM(status != 'cancelled'), 2) AS return_rate_pct\nFROM orders",
      "error": null
     }
    ],
@@ -1184,24 +1224,24 @@
     ],
     "total_rows": 1
    },
-   "seconds": 30.7
+   "seconds": 82.6
   },
   {
    "id": "q22",
    "level": "medium",
    "question": "What is the cancellation rate for each payment method?",
-   "correct": false,
+   "correct": true,
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  payment_method,\n  ROUND(100.0 * SUM(status = 'cancelled') / SUM(status <> 'cancelled'), 2) AS cancellation_rate_pct\nFROM orders\nGROUP BY\n  payment_method\nLIMIT 200",
+   "sql": "SELECT payment_method, ROUND(100.0 * SUM(o.status = 'cancelled') / COUNT(*), 2) AS cancellation_rate_pct\nFROM orders o\nGROUP BY payment_method",
    "attempts": [
     {
-     "sql": "SELECT\n  payment_method,\n  ROUND(100.0 * SUM(status = 'cancelled') / SUM(status <> 'cancelled'), 2) AS cancellation_rate_pct\nFROM orders\nGROUP BY\n  payment_method\nLIMIT 200",
+     "sql": "SELECT payment_method, ROUND(100.0 * SUM(o.status = 'cancelled') / COUNT(*), 2) AS cancellation_rate_pct\nFROM orders o\nGROUP BY payment_method",
      "error": null
     }
    ],
-   "answer": "Highest cancellation rate %: Cash on Delivery (8.18%). 5 rows.",
+   "answer": "Highest cancellation rate %: Cash on Delivery (7.56%). 5 rows.",
    "chart": {
     "type": "bar",
     "x": "payment_method",
@@ -1215,23 +1255,23 @@
     "rows": [
      [
       "Card",
-      7.27
+      6.78
      ],
      [
       "Cash on Delivery",
-      8.18
+      7.56
      ],
      [
       "Net Banking",
-      7.43
+      6.92
      ],
      [
       "UPI",
-      7.12
+      6.65
      ],
      [
       "Wallet",
-      6.8
+      6.37
      ]
     ],
     "total_rows": 5
@@ -1266,7 +1306,7 @@
     ],
     "total_rows": 5
    },
-   "seconds": 33.2
+   "seconds": 84.3
   },
   {
    "id": "q23",
@@ -1276,14 +1316,14 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  brand,\n  SUM(quantity * unit_price_inr * (\n    1 - discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nGROUP BY\n  brand\nORDER BY\n  revenue_inr DESC\nLIMIT 1",
+   "sql": "SELECT p.brand, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.brand\nORDER BY revenue_inr DESC\nLIMIT 1",
    "attempts": [
     {
-     "sql": "SELECT\n  brand,\n  SUM(quantity * unit_price_inr * (\n    1 - discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nGROUP BY\n  brand\nORDER BY\n  revenue_inr DESC\nLIMIT 1",
+     "sql": "SELECT p.brand, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.brand\nORDER BY revenue_inr DESC\nLIMIT 1",
      "error": null
     }
    ],
-   "answer": "Brand: Urban Leaf · Revenue: ₹23,608,790.25",
+   "answer": "Brand: Urban Leaf · Revenue: ₹2,04,09,254.65",
    "chart": null,
    "table": {
     "columns": [
@@ -1293,7 +1333,7 @@
     "rows": [
      [
       "Urban Leaf",
-      23608790.25
+      20409254.65
      ]
     ],
     "total_rows": 1
@@ -1310,7 +1350,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 41.4
+   "seconds": 115.4
   },
   {
    "id": "q24",
@@ -1318,12 +1358,16 @@
    "question": "What is the average delivery time in days for delivered orders?",
    "correct": true,
    "type": "answer",
-   "tries": 1,
-   "fixed": false,
-   "sql": "SELECT\n  AVG(JULIANDAY(delivery_date) - JULIANDAY(order_date)) AS avg_delivery_time_days\nFROM orders\nWHERE\n  status = 'delivered'\nLIMIT 200",
+   "tries": 2,
+   "fixed": true,
+   "sql": "SELECT AVG(julianday(o.delivery_date) - julianday(o.order_date)) AS avg_delivery_time_days\nFROM orders o\nWHERE o.status = 'delivered'",
    "attempts": [
     {
-     "sql": "SELECT\n  AVG(JULIANDAY(delivery_date) - JULIANDAY(order_date)) AS avg_delivery_time_days\nFROM orders\nWHERE\n  status = 'delivered'\nLIMIT 200",
+     "sql": "SELECT AVG(julianday(d.delivery_date) - julianday(o.order_date)) AS avg_delivery_time_days\nFROM orders o\nJOIN deliveries d ON d.order_id = o.order_id\nWHERE o.status = 'delivered'",
+     "error": "unknown table 'deliveries'. The tables are: customers, order_items, orders, products"
+    },
+    {
+     "sql": "SELECT AVG(julianday(o.delivery_date) - julianday(o.order_date)) AS avg_delivery_time_days\nFROM orders o\nWHERE o.status = 'delivered'",
      "error": null
     }
    ],
@@ -1352,32 +1396,32 @@
     ],
     "total_rows": 1
    },
-   "seconds": 31.4
+   "seconds": 186.4
   },
   {
    "id": "q25",
    "level": "medium",
    "question": "How many different customers placed an order in September 2026?",
-   "correct": false,
+   "correct": true,
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(DISTINCT customer_id) AS unique_customers\nFROM orders\nWHERE\n  status IN ('delivered', 'shipped') AND SUBSTRING(order_date, 1, 7) = '2026-09'\nLIMIT 200",
+   "sql": "SELECT COUNT(DISTINCT customer_id) AS customers_placed_order\nFROM orders\nWHERE order_date LIKE '2026-09%'",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(DISTINCT customer_id) AS unique_customers\nFROM orders\nWHERE\n  status IN ('delivered', 'shipped') AND SUBSTRING(order_date, 1, 7) = '2026-09'\nLIMIT 200",
+     "sql": "SELECT COUNT(DISTINCT customer_id) AS customers_placed_order\nFROM orders\nWHERE order_date LIKE '2026-09%'",
      "error": null
     }
    ],
-   "answer": "Unique customers: 504",
+   "answer": "Customers placed order: 559",
    "chart": null,
    "table": {
     "columns": [
-     "unique_customers"
+     "customers_placed_order"
     ],
     "rows": [
      [
-      504
+      559
      ]
     ],
     "total_rows": 1
@@ -1394,34 +1438,36 @@
     ],
     "total_rows": 1
    },
-   "seconds": 35.0
+   "seconds": 84.5
   },
   {
    "id": "q26",
    "level": "medium",
    "question": "How many customers have never placed an order?",
-   "correct": false,
-   "type": "failed",
-   "tries": 3,
+   "correct": true,
+   "type": "answer",
+   "tries": 1,
    "fixed": false,
-   "sql": null,
+   "sql": "SELECT COUNT(*) AS customers_never_ordered\nFROM customers\nWHERE customer_id NOT IN (SELECT customer_id FROM orders)",
    "attempts": [
     {
-     "sql": "SELECT COUNT(*) AS no_orders_customers\nFROM customers\nLEFT JOIN orders o ON c.customer_id = o.customer_id\nWHERE o.order_id IS NULL",
-     "error": "no such column: c.customer_id"
-    },
-    {
-     "sql": "SELECT COUNT(*) AS no_orders_customers\nFROM customers\nLEFT JOIN orders o ON customers.customer_id = orders.customer_id\nWHERE orders.order_id IS NULL",
-     "error": "no such column: orders.order_id"
-    },
-    {
-     "sql": "SELECT COUNT(*) AS no_orders_customers\nFROM customers\nLEFT JOIN orders o ON customers.customer_id = orders.customer_id\nWHERE orders.order_id IS NULL",
-     "error": "no such column: orders.order_id"
+     "sql": "SELECT COUNT(*) AS customers_never_ordered\nFROM customers\nWHERE customer_id NOT IN (SELECT customer_id FROM orders)",
+     "error": null
     }
    ],
-   "answer": "I couldn't write a working query after 3 tries. Last error: no such column: orders.order_id",
+   "answer": "Customers never ordered: 1",
    "chart": null,
-   "table": null,
+   "table": {
+    "columns": [
+     "customers_never_ordered"
+    ],
+    "rows": [
+     [
+      1
+     ]
+    ],
+    "total_rows": 1
+   },
    "expected_sql": "SELECT COUNT(*) FROM customers WHERE customer_id NOT IN (SELECT customer_id FROM orders)",
    "expected": {
     "columns": [
@@ -1434,7 +1480,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 94.8
+   "seconds": 79.5
   },
   {
    "id": "q27",
@@ -1444,14 +1490,14 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  c.name,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS total_spend\nFROM customers AS c\nJOIN orders AS o\n  ON c.customer_id = o.customer_id\nJOIN order_items AS oi\n  ON o.order_id = oi.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nGROUP BY\n  c.customer_id\nORDER BY\n  total_spend DESC\nLIMIT 5",
+   "sql": "SELECT c.name, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS total_spend\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.customer_id\nORDER BY total_spend DESC\nLIMIT 5",
    "attempts": [
     {
-     "sql": "SELECT\n  c.name,\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS total_spend\nFROM customers AS c\nJOIN orders AS o\n  ON c.customer_id = o.customer_id\nJOIN order_items AS oi\n  ON o.order_id = oi.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nGROUP BY\n  c.customer_id\nORDER BY\n  total_spend DESC\nLIMIT 5",
+     "sql": "SELECT c.name, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS total_spend\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.customer_id\nORDER BY total_spend DESC\nLIMIT 5",
      "error": null
     }
    ],
-   "answer": "Highest total spend: Arjun Das (₹174,644.20). 5 rows.",
+   "answer": "Highest total spend: Arjun Das (₹1,74,644.20). 5 rows.",
    "chart": {
     "type": "bar",
     "x": "name",
@@ -1516,34 +1562,46 @@
     ],
     "total_rows": 5
    },
-   "seconds": 46.2
+   "seconds": 117.9
   },
   {
    "id": "q28",
    "level": "medium",
    "question": "Compare revenue from Business and Consumer customers.",
-   "correct": false,
-   "type": "failed",
-   "tries": 3,
+   "correct": true,
+   "type": "answer",
+   "tries": 1,
    "fixed": false,
-   "sql": null,
+   "sql": "SELECT \n    c.segment AS customer_segment,\n    ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.segment",
    "attempts": [
     {
-     "sql": "SELECT \n    CASE \n        WHEN segment = 'Business' THEN 'Business'\n        ELSE 'Consumer'\n    END AS customer_type,\n    SUM(line_revenue) AS total_revenue\nFROM (\n    SELECT \n        CASE \n            WHEN status = 'delivered' OR status = 'shipped' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)\n            ELSE 0\n        END AS line_revenue\n    FROM order_items oi\n    JOIN orders o ON o.order_id = oi.order_id\n    WHERE o.status IN ('delivered', 'shipped')\n) subquery\nGROUP BY customer_type\nORDER BY total_revenue DESC",
-     "error": "no such column: segment"
-    },
-    {
-     "sql": "SELECT \n    CASE \n        WHEN status = 'delivered' OR status = 'shipped' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)\n        ELSE 0\n    END AS line_revenue\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY o.segment\nORDER BY total_revenue DESC",
-     "error": "no such column: total_revenue"
-    },
-    {
-     "sql": "SELECT \n    CASE \n        WHEN status = 'delivered' OR status = 'shipped' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)\n        ELSE 0\n    END AS line_revenue\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY o.segment\nORDER BY line_revenue DESC",
-     "error": "no such column: o.segment"
+     "sql": "SELECT \n    c.segment AS customer_segment,\n    ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.segment",
+     "error": null
     }
    ],
-   "answer": "I couldn't write a working query after 3 tries. Last error: no such column: o.segment",
-   "chart": null,
-   "table": null,
+   "answer": "Highest revenue: Consumer (₹6,64,88,274.65). 2 rows.",
+   "chart": {
+    "type": "bar",
+    "x": "customer_segment",
+    "y": "revenue_inr"
+   },
+   "table": {
+    "columns": [
+     "customer_segment",
+     "revenue_inr"
+    ],
+    "rows": [
+     [
+      "Business",
+      10185164.65
+     ],
+     [
+      "Consumer",
+      66488274.65
+     ]
+    ],
+    "total_rows": 2
+   },
    "expected_sql": "SELECT c.segment, SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) FROM order_items oi JOIN orders o ON o.order_id = oi.order_id JOIN customers c ON c.customer_id = o.customer_id WHERE o.status IN ('delivered', 'shipped') GROUP BY c.segment",
    "expected": {
     "columns": [
@@ -1562,7 +1620,7 @@
     ],
     "total_rows": 2
    },
-   "seconds": 167.1
+   "seconds": 115.0
   },
   {
    "id": "q29",
@@ -1572,14 +1630,14 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2025-10-01' AND '2025-11-30'\nLIMIT 200",
+   "sql": "SELECT ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date BETWEEN '2025-10-01' AND '2025-11-30'",
    "attempts": [
     {
-     "sql": "SELECT\n  SUM(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS revenue_inr\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND o.order_date BETWEEN '2025-10-01' AND '2025-11-30'\nLIMIT 200",
+     "sql": "SELECT ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped') AND o.order_date BETWEEN '2025-10-01' AND '2025-11-30'",
      "error": null
     }
    ],
-   "answer": "Revenue: ₹10,751,857.80",
+   "answer": "Revenue: ₹1,07,51,857.80",
    "chart": null,
    "table": {
     "columns": [
@@ -1604,7 +1662,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 49.8
+   "seconds": 121.0
   },
   {
    "id": "q30",
@@ -1614,10 +1672,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  AVG(discount_pct) AS avg_discount_pct\nFROM order_items\nLIMIT 200",
+   "sql": "SELECT AVG(discount_pct) AS avg_discount_pct\nFROM order_items",
    "attempts": [
     {
-     "sql": "SELECT\n  AVG(discount_pct) AS avg_discount_pct\nFROM order_items\nLIMIT 200",
+     "sql": "SELECT AVG(discount_pct) AS avg_discount_pct\nFROM order_items",
      "error": null
     }
    ],
@@ -1646,7 +1704,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 25.9
+   "seconds": 74.1
   },
   {
    "id": "q31",
@@ -1656,19 +1714,19 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  payment_method,\n  COUNT(*) AS count\nFROM orders\nWHERE\n  order_date BETWEEN '2026-01-01' AND '2026-12-31'\nGROUP BY\n  payment_method\nORDER BY\n  count DESC\nLIMIT 1",
+   "sql": "SELECT payment_method, COUNT(*) AS usage_count\nFROM orders\nWHERE order_date LIKE '2026%'\nGROUP BY payment_method\nORDER BY usage_count DESC\nLIMIT 1",
    "attempts": [
     {
-     "sql": "SELECT\n  payment_method,\n  COUNT(*) AS count\nFROM orders\nWHERE\n  order_date BETWEEN '2026-01-01' AND '2026-12-31'\nGROUP BY\n  payment_method\nORDER BY\n  count DESC\nLIMIT 1",
+     "sql": "SELECT payment_method, COUNT(*) AS usage_count\nFROM orders\nWHERE order_date LIKE '2026%'\nGROUP BY payment_method\nORDER BY usage_count DESC\nLIMIT 1",
      "error": null
     }
    ],
-   "answer": "Payment method: UPI · Count: 2663",
+   "answer": "Payment method: UPI · Usage count: 2663",
    "chart": null,
    "table": {
     "columns": [
      "payment_method",
-     "count"
+     "usage_count"
     ],
     "rows": [
      [
@@ -1690,68 +1748,35 @@
     ],
     "total_rows": 1
    },
-   "seconds": 36.9
+   "seconds": 86.0
   },
   {
    "id": "q32",
    "level": "medium",
    "question": "How many customers have placed more than 15 orders?",
-   "correct": false,
+   "correct": true,
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(DISTINCT customer_id) AS num_customers\nFROM orders\nGROUP BY\n  customer_id\nHAVING\n  COUNT(order_id) > 15\nLIMIT 200",
+   "sql": "SELECT COUNT(*) AS customers_with_more_than_15_orders\nFROM (\n    SELECT customer_id\n    FROM orders\n    GROUP BY customer_id\n    HAVING COUNT(*) > 15\n) AS customer_counts",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(DISTINCT customer_id) AS num_customers\nFROM orders\nGROUP BY\n  customer_id\nHAVING\n  COUNT(order_id) > 15\nLIMIT 200",
+     "sql": "SELECT COUNT(*) AS customers_with_more_than_15_orders\nFROM (\n    SELECT customer_id\n    FROM orders\n    GROUP BY customer_id\n    HAVING COUNT(*) > 15\n) AS customer_counts",
      "error": null
     }
    ],
-   "answer": "13 rows.",
+   "answer": "Customers with more than 15 orders: 13",
    "chart": null,
    "table": {
     "columns": [
-     "num_customers"
+     "customers_with_more_than_15_orders"
     ],
     "rows": [
      [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
-     ],
-     [
-      1
+      13
      ]
     ],
-    "total_rows": 13
+    "total_rows": 1
    },
    "expected_sql": "SELECT COUNT(*) FROM (SELECT customer_id FROM orders GROUP BY customer_id HAVING COUNT(*) > 15)",
    "expected": {
@@ -1765,7 +1790,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 30.6
+   "seconds": 89.8
   },
   {
    "id": "q33",
@@ -1775,10 +1800,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  STRFTIME('%Y-%m', signup_date) AS month,\n  COUNT(*) AS new_customers\nFROM customers\nWHERE\n  signup_date >= '2026-01-01' AND signup_date < '2027-01-01'\nGROUP BY\n  STRFTIME('%Y-%m', signup_date)\nORDER BY\n  month\nLIMIT 200",
+   "sql": "SELECT strftime('%Y-%m', signup_date) AS month, COUNT(*) AS new_customers\nFROM customers\nWHERE signup_date LIKE '2026%'\nGROUP BY month",
    "attempts": [
     {
-     "sql": "SELECT\n  STRFTIME('%Y-%m', signup_date) AS month,\n  COUNT(*) AS new_customers\nFROM customers\nWHERE\n  signup_date >= '2026-01-01' AND signup_date < '2027-01-01'\nGROUP BY\n  STRFTIME('%Y-%m', signup_date)\nORDER BY\n  month\nLIMIT 200",
+     "sql": "SELECT strftime('%Y-%m', signup_date) AS month, COUNT(*) AS new_customers\nFROM customers\nWHERE signup_date LIKE '2026%'\nGROUP BY month",
      "error": null
     }
    ],
@@ -1859,7 +1884,7 @@
     ],
     "total_rows": 8
    },
-   "seconds": 40.6
+   "seconds": 85.3
   },
   {
    "id": "q34",
@@ -1869,10 +1894,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  COUNT(DISTINCT order_id) AS num_orders_with_multiple_products\nFROM order_items\nGROUP BY\n  order_id\nHAVING\n  COUNT(product_id) > 1\nLIMIT 200",
+   "sql": "SELECT COUNT(*) AS multi_product_orders\nFROM order_items\nGROUP BY order_id\nHAVING COUNT(product_id) > 1",
    "attempts": [
     {
-     "sql": "SELECT\n  COUNT(DISTINCT order_id) AS num_orders_with_multiple_products\nFROM order_items\nGROUP BY\n  order_id\nHAVING\n  COUNT(product_id) > 1\nLIMIT 200",
+     "sql": "SELECT COUNT(*) AS multi_product_orders\nFROM order_items\nGROUP BY order_id\nHAVING COUNT(product_id) > 1",
      "error": null
     }
    ],
@@ -1880,44 +1905,44 @@
    "chart": null,
    "table": {
     "columns": [
-     "num_orders_with_multiple_products"
+     "multi_product_orders"
     ],
     "rows": [
      [
-      1
+      3
      ],
      [
-      1
+      3
      ],
      [
-      1
+      3
      ],
      [
-      1
+      2
      ],
      [
-      1
+      2
      ],
      [
-      1
+      2
      ],
      [
-      1
+      3
      ],
      [
-      1
+      3
      ],
      [
-      1
+      2
      ],
      [
-      1
+      2
      ],
      [
-      1
+      3
      ],
      [
-      1
+      3
      ]
     ],
     "total_rows": 200
@@ -1934,7 +1959,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 30.7
+   "seconds": 81.2
   },
   {
    "id": "q35",
@@ -1944,10 +1969,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  AVG(quantity) AS avg_units_per_order\nFROM order_items\nWHERE\n  order_id IN (\n    SELECT\n      order_id\n    FROM orders\n    WHERE\n      status IN ('delivered', 'shipped')\n  )\nLIMIT 200",
+   "sql": "SELECT AVG(quantity) AS avg_units_per_order\nFROM order_items\nJOIN orders ON orders.order_id = order_items.order_id\nWHERE orders.status IN ('delivered', 'shipped')",
    "attempts": [
     {
-     "sql": "SELECT\n  AVG(quantity) AS avg_units_per_order\nFROM order_items\nWHERE\n  order_id IN (\n    SELECT\n      order_id\n    FROM orders\n    WHERE\n      status IN ('delivered', 'shipped')\n  )\nLIMIT 200",
+     "sql": "SELECT AVG(quantity) AS avg_units_per_order\nFROM order_items\nJOIN orders ON orders.order_id = order_items.order_id\nWHERE orders.status IN ('delivered', 'shipped')",
      "error": null
     }
    ],
@@ -1976,7 +2001,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 32.4
+   "seconds": 85.5
   },
   {
    "id": "q36",
@@ -1986,19 +2011,19 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  p.product_name,\n  COUNT(o.order_id) AS returned_count\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status = 'returned'\nGROUP BY\n  p.product_name\nORDER BY\n  returned_count DESC\nLIMIT 1",
+   "sql": "SELECT p.product_name, COUNT(*) AS returned_orders\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status = 'returned'\nGROUP BY p.product_name\nORDER BY returned_orders DESC\nLIMIT 1",
    "attempts": [
     {
-     "sql": "SELECT\n  p.product_name,\n  COUNT(o.order_id) AS returned_count\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status = 'returned'\nGROUP BY\n  p.product_name\nORDER BY\n  returned_count DESC\nLIMIT 1",
+     "sql": "SELECT p.product_name, COUNT(*) AS returned_orders\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status = 'returned'\nGROUP BY p.product_name\nORDER BY returned_orders DESC\nLIMIT 1",
      "error": null
     }
    ],
-   "answer": "Product name: Bluetooth Speaker · Returned count: 48",
+   "answer": "Product name: Bluetooth Speaker · Returned orders: 48",
    "chart": null,
    "table": {
     "columns": [
      "product_name",
-     "returned_count"
+     "returned_orders"
     ],
     "rows": [
      [
@@ -2020,7 +2045,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 39.2
+   "seconds": 98.0
   },
   {
    "id": "q37",
@@ -2030,10 +2055,10 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  c.city,\n  AVG(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS avg_order_value\nFROM customers AS c\nJOIN orders AS o\n  ON c.customer_id = o.customer_id\nJOIN order_items AS oi\n  ON o.order_id = oi.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nGROUP BY\n  c.city\nORDER BY\n  avg_order_value DESC\nLIMIT 3",
+   "sql": "SELECT c.city, AVG(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) AS avg_order_value_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.city\nORDER BY avg_order_value_inr DESC\nLIMIT 3",
    "attempts": [
     {
-     "sql": "SELECT\n  c.city,\n  AVG(oi.quantity * oi.unit_price_inr * (\n    1 - oi.discount_pct / 100.0\n  )) AS avg_order_value\nFROM customers AS c\nJOIN orders AS o\n  ON c.customer_id = o.customer_id\nJOIN order_items AS oi\n  ON o.order_id = oi.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nGROUP BY\n  c.city\nORDER BY\n  avg_order_value DESC\nLIMIT 3",
+     "sql": "SELECT c.city, AVG(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) AS avg_order_value_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.city\nORDER BY avg_order_value_inr DESC\nLIMIT 3",
      "error": null
     }
    ],
@@ -2041,12 +2066,12 @@
    "chart": {
     "type": "bar",
     "x": "city",
-    "y": "avg_order_value"
+    "y": "avg_order_value_inr"
    },
    "table": {
     "columns": [
      "city",
-     "avg_order_value"
+     "avg_order_value_inr"
     ],
     "rows": [
      [
@@ -2086,7 +2111,7 @@
     ],
     "total_rows": 3
    },
-   "seconds": 46.4
+   "seconds": 113.9
   },
   {
    "id": "q38",
@@ -2094,28 +2119,24 @@
    "question": "What percentage of total revenue comes from Electronics?",
    "correct": false,
    "type": "answer",
-   "tries": 2,
+   "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  SUM(\n    CASE\n      WHEN p.category = 'Electronics'\n      THEN oi.quantity * oi.unit_price_inr * (\n        1 - oi.discount_pct / 100.0\n      )\n      ELSE 0\n    END\n  ) AS line_revenue\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nLIMIT 200",
+   "sql": "SELECT ROUND(100.0 * SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) / SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS electronics_revenue_pct\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped') AND p.category = 'Electronics'",
    "attempts": [
     {
-     "sql": "SELECT ROUND((SUM(CASE WHEN p.category = 'Electronics' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) ELSE 0 END) / SUM(line_revenue)) * 100, 2) AS electronics_percentage\nFROM (\n    SELECT SUM(quantity * unit_price_inr * (1 - discount_pct / 100.0)) AS line_revenue\n    FROM order_items oi\n    JOIN orders o ON o.order_id = oi.order_id\n    JOIN products p ON p.product_id = oi.product_id\n    WHERE o.status IN ('delivered', 'shipped')\n) AS subquery",
-     "error": "no such column: p.category"
-    },
-    {
-     "sql": "SELECT\n  SUM(\n    CASE\n      WHEN p.category = 'Electronics'\n      THEN oi.quantity * oi.unit_price_inr * (\n        1 - oi.discount_pct / 100.0\n      )\n      ELSE 0\n    END\n  ) AS line_revenue\nFROM order_items AS oi\nJOIN orders AS o\n  ON o.order_id = oi.order_id\nJOIN products AS p\n  ON p.product_id = oi.product_id\nWHERE\n  o.status IN ('delivered', 'shipped')\nLIMIT 200",
+     "sql": "SELECT ROUND(100.0 * SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)) / SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS electronics_revenue_pct\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped') AND p.category = 'Electronics'",
      "error": null
     }
    ],
-   "answer": "Line revenue: ₹31,875,746.95",
+   "answer": "Electronics revenue %: ₹100",
    "chart": null,
    "table": {
     "columns": [
-     "line_revenue"
+     "electronics_revenue_pct"
     ],
     "rows": [
      [
-      31875746.95
+      100.0
      ]
     ],
     "total_rows": 1
@@ -2132,7 +2153,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 108.2
+   "seconds": 131.1
   },
   {
    "id": "q39",
@@ -2142,22 +2163,22 @@
    "type": "answer",
    "tries": 1,
    "fixed": false,
-   "sql": "SELECT\n  CAST(SUM(\n    CASE\n      WHEN SUBSTRING(order_date, 1, 7) = '2026-07'\n      THEN li.quantity * li.unit_price_inr * (\n        1 - li.discount_pct / 100.0\n      )\n      ELSE 0\n    END\n  ) AS REAL) / CAST(SUM(\n    CASE\n      WHEN SUBSTRING(order_date, 1, 7) = '2025-07'\n      THEN li.quantity * li.unit_price_inr * (\n        1 - li.discount_pct / 100.0\n      )\n      ELSE 0\n    END\n  ) AS REAL) * 100 AS growth_percentage\nFROM order_items AS li\nJOIN orders AS o\n  ON o.order_id = li.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND SUBSTRING(o.order_date, 1, 7) BETWEEN '2026-07-01' AND '2026-09-30'\nLIMIT 200",
+   "sql": "SELECT ROUND((SUM(CASE WHEN o.order_date LIKE '2026-07%' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) ELSE 0 END) -\n             SUM(CASE WHEN o.order_date LIKE '2025-07%' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) ELSE 0 END)) /\n            SUM(CASE WHEN o.order_date LIKE '2025-07%' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) ELSE 0 END) * 100, 2) AS growth_pct\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped')",
    "attempts": [
     {
-     "sql": "SELECT\n  CAST(SUM(\n    CASE\n      WHEN SUBSTRING(order_date, 1, 7) = '2026-07'\n      THEN li.quantity * li.unit_price_inr * (\n        1 - li.discount_pct / 100.0\n      )\n      ELSE 0\n    END\n  ) AS REAL) / CAST(SUM(\n    CASE\n      WHEN SUBSTRING(order_date, 1, 7) = '2025-07'\n      THEN li.quantity * li.unit_price_inr * (\n        1 - li.discount_pct / 100.0\n      )\n      ELSE 0\n    END\n  ) AS REAL) * 100 AS growth_percentage\nFROM order_items AS li\nJOIN orders AS o\n  ON o.order_id = li.order_id\nWHERE\n  o.status IN ('delivered', 'shipped')\n  AND SUBSTRING(o.order_date, 1, 7) BETWEEN '2026-07-01' AND '2026-09-30'\nLIMIT 200",
+     "sql": "SELECT ROUND((SUM(CASE WHEN o.order_date LIKE '2026-07%' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) ELSE 0 END) -\n             SUM(CASE WHEN o.order_date LIKE '2025-07%' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) ELSE 0 END)) /\n            SUM(CASE WHEN o.order_date LIKE '2025-07%' THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) ELSE 0 END) * 100, 2) AS growth_pct\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nWHERE o.status IN ('delivered', 'shipped')",
      "error": null
     }
    ],
-   "answer": "Growth percentage: none",
+   "answer": "Growth %: 39.48%",
    "chart": null,
    "table": {
     "columns": [
-     "growth_percentage"
+     "growth_pct"
     ],
     "rows": [
      [
-      null
+      39.48
      ]
     ],
     "total_rows": 1
@@ -2174,34 +2195,66 @@
     ],
     "total_rows": 1
    },
-   "seconds": 78.1
+   "seconds": 158.1
   },
   {
    "id": "q40",
    "level": "hard",
    "question": "What is the return rate for each product category?",
    "correct": false,
-   "type": "failed",
-   "tries": 3,
+   "type": "answer",
+   "tries": 1,
    "fixed": false,
-   "sql": null,
+   "sql": "SELECT p.category, ROUND(100.0 * SUM(o.status = 'returned') / COUNT(*), 2) AS return_rate_pct\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.category",
    "attempts": [
     {
-     "sql": "SELECT p.category, ROUND(100.0 * SUM(CASE WHEN o.status = 'returned' THEN 1 ELSE 0 END) / SUM(o.status != 'cancelled'), 2) AS return_rate_pct\nFROM orders o\nJOIN products p ON o.product_id = p.product_id\nGROUP BY p.category",
-     "error": "no such column: o.product_id"
-    },
-    {
-     "sql": "SELECT p.category, ROUND(100.0 * SUM(CASE WHEN o.status = 'returned' THEN 1 ELSE 0 END) / SUM(o.status != 'cancelled'), 2) AS return_rate_pct\nFROM orders o\nJOIN products p ON o.product_id = p.product_id\nGROUP BY p.category",
-     "error": "no such column: o.product_id"
-    },
-    {
-     "sql": "SELECT p.category, ROUND(100.0 * SUM(CASE WHEN o.status = 'returned' THEN 1 ELSE 0 END) / SUM(o.status != 'cancelled'), 2) AS return_rate_pct\nFROM orders o\nJOIN products p ON o.product_id = p.product_id\nGROUP BY p.category",
-     "error": "no such column: o.product_id"
+     "sql": "SELECT p.category, ROUND(100.0 * SUM(o.status = 'returned') / COUNT(*), 2) AS return_rate_pct\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.category",
+     "error": null
     }
    ],
-   "answer": "I couldn't write a working query after 3 tries. Last error: no such column: o.product_id",
-   "chart": null,
-   "table": null,
+   "answer": "Highest return rate %: Beauty (0%). 7 rows.",
+   "chart": {
+    "type": "bar",
+    "x": "category",
+    "y": "return_rate_pct"
+   },
+   "table": {
+    "columns": [
+     "category",
+     "return_rate_pct"
+    ],
+    "rows": [
+     [
+      "Beauty",
+      0.0
+     ],
+     [
+      "Books",
+      0.0
+     ],
+     [
+      "Electronics",
+      0.0
+     ],
+     [
+      "Fashion",
+      0.0
+     ],
+     [
+      "Grocery",
+      0.0
+     ],
+     [
+      "Home & Kitchen",
+      0.0
+     ],
+     [
+      "Sports",
+      0.0
+     ]
+    ],
+    "total_rows": 7
+   },
    "expected_sql": "SELECT p.category, 100.0 * COUNT(DISTINCT CASE WHEN o.status = 'returned' THEN o.order_id END) / COUNT(DISTINCT CASE WHEN o.status != 'cancelled' THEN o.order_id END) FROM order_items oi JOIN orders o ON o.order_id = oi.order_id JOIN products p ON p.product_id = oi.product_id GROUP BY p.category",
    "expected": {
     "columns": [
@@ -2232,39 +2285,39 @@
     ],
     "total_rows": 7
    },
-   "seconds": 125.9
+   "seconds": 103.2
   }
  ],
  "vague": [
   {
    "id": "v1",
    "question": "Show me the best products",
-   "asked_back": true,
-   "reply": "What criteria should be used to determine the best products? For example, based on revenue, popularity, or some other metric?"
+   "asked_back": false,
+   "reply": "SELECT p.product_name, SUM(oi.quantity) AS units_sold\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY p.product_name\nORDER BY units_sold DESC\nLIMIT 1"
   },
   {
    "id": "v2",
    "question": "How are we doing?",
-   "asked_back": false,
-   "reply": "I couldn't write a working query after 3 tries. Last error: no such column: customer_id"
+   "asked_back": true,
+   "reply": "How are we doing? By revenue, units sold, number of orders, or something else?"
   },
   {
    "id": "v3",
    "question": "Compare the two cities",
    "asked_back": false,
-   "reply": "SELECT\n  city,\n  COUNT(*) AS num_customers\nFROM customers\nGROUP BY\n  city\nORDER BY\n  num_customers DESC\nLIMIT 200"
+   "reply": "SELECT c.city, COUNT(*) AS orders, SUM(oi.quantity) AS units_sold, ROUND(SUM(oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0)), 2) AS revenue_inr\nFROM order_items oi\nJOIN orders o ON o.order_id = oi.order_id\nJOIN customers c ON c.customer_id = o.customer_id\nWHERE o.status IN ('delivered', 'shipped')\nGROUP BY c.city\nORDER BY revenue_inr DESC\nLIMIT 2"
   },
   {
    "id": "v4",
    "question": "What is the growth?",
    "asked_back": true,
-   "reply": "What kind of growth are you interested in? Is it monthly, yearly, or overall?"
+   "reply": "Growth in what? Revenue, units sold, or number of orders?"
   },
   {
    "id": "v5",
    "question": "Give me the sales numbers",
    "asked_back": false,
-   "reply": "SELECT\n  SUM(line_revenue) AS total_sales_inr\nFROM (\n  SELECT\n    oi.quantity * oi.unit_price_inr * (\n      1 - oi.discount_pct / 100.0\n    ) AS line_revenue\n  FROM order_items AS oi\n  JOIN orders AS o\n    ON o.order_id = oi.order_id\n  WHERE\n    o.status IN ('delivered', 'shipped')\n) AS subquery\nLIMIT 200"
+   "reply": "SELECT \n    SUM(CASE WHEN o.status IN ('delivered', 'shipped') THEN oi.quantity * oi.unit_price_inr * (1 - oi.discount_pct / 100.0) ELSE 0 END) AS total_revenue_inr,\n    COUNT(DISTINCT o.order_id) AS total_orders,\n    COUNT(DISTINCT c.customer_id) AS total_customers\nFROM \n    order_items oi\nJOIN \n    orders o ON o.order_id = oi.order_id\nJOIN \n    customers c ON c.customer_id = o.customer_id\nWHERE \n    o.status IN ('delivered', 'shipped')"
   }
  ]
 }
