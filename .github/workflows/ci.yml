@@ -1,0 +1,17 @@
+# Every push: test the agent's 8 steps (with a fake AI, so it's free and fast) and build the website.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy sqlglot pytest
+      - run: pytest -q

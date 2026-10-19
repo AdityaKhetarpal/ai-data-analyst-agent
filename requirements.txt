@@ -1,0 +1,8 @@
+pandas
+numpy
+sqlglot
+pytest
+# the AI (only one is needed):
+anthropic          # Claude, if you have ANTHROPIC_API_KEY
+transformers       # the free open-source model (also needs torch)
+accelerate

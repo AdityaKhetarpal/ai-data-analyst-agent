@@ -1,0 +1,146 @@
+{
+ "customers": {
+  "rows": 1500,
+  "columns": [
+   "customer_id",
+   "name",
+   "city",
+   "state",
+   "segment",
+   "signup_date"
+  ],
+  "sample": [
+   [
+    1,
+    "Rahul Das",
+    "Jaipur",
+    "Rajasthan",
+    "Consumer",
+    "2026-02-28"
+   ],
+   [
+    2,
+    "Karan Banerjee",
+    "Hyderabad",
+    "Telangana",
+    "Consumer",
+    "2025-12-03"
+   ],
+   [
+    3,
+    "Aarav Mehta",
+    "Kochi",
+    "Kerala",
+    "Consumer",
+    "2026-07-03"
+   ]
+  ]
+ },
+ "products": {
+  "rows": 70,
+  "columns": [
+   "product_id",
+   "product_name",
+   "category",
+   "brand",
+   "list_price_inr"
+  ],
+  "sample": [
+   [
+    1,
+    "Wireless Earbuds",
+    "Electronics",
+    "Saffron",
+    5489
+   ],
+   [
+    2,
+    "Smartwatch",
+    "Electronics",
+    "Nova",
+    2499
+   ],
+   [
+    3,
+    "Bluetooth Speaker",
+    "Electronics",
+    "Urban Leaf",
+    17429
+   ]
+  ]
+ },
+ "orders": {
+  "rows": 12000,
+  "columns": [
+   "order_id",
+   "customer_id",
+   "order_date",
+   "delivery_date",
+   "status",
+   "payment_method"
+  ],
+  "sample": [
+   [
+    100001,
+    981,
+    "2025-01-01",
+    "2025-01-04",
+    "delivered",
+    "Card"
+   ],
+   [
+    100002,
+    1499,
+    "2025-01-01",
+    "2025-01-03",
+    "delivered",
+    "Cash on Delivery"
+   ],
+   [
+    100003,
+    1357,
+    "2025-01-01",
+    "2025-01-06",
+    "delivered",
+    "UPI"
+   ]
+  ]
+ },
+ "order_items": {
+  "rows": 20036,
+  "columns": [
+   "order_item_id",
+   "order_id",
+   "product_id",
+   "quantity",
+   "unit_price_inr",
+   "discount_pct"
+  ],
+  "sample": [
+   [
+    1,
+    100001,
+    57,
+    2,
+    409,
+    0
+   ],
+   [
+    2,
+    100001,
+    53,
+    2,
+    509,
+    10
+   ],
+   [
+    3,
+    100001,
+    7,
+    1,
+    1989,
+    20
+   ]
+  ]
+ }
+}

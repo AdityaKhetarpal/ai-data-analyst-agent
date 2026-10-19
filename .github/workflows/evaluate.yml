@@ -1,0 +1,58 @@
+# Run the 40-question test (step 8) with a real AI and publish the score + every answer to the website.
+# Default: the FREE open-source model (no key, no cost). Choose "claude" when running it by hand
+# to use Claude instead (needs the repository secret ANTHROPIC_API_KEY; it is never printed or stored in code).
+name: Evaluate
+
+on:
+  workflow_dispatch:
+    inputs:
+      engine:
+        description: "Which AI writes the SQL"
+        type: choice
+        options: [free, claude]
+        default: free
+  schedule:
+    - cron: "0 4 * * 1"   # Monday 09:30 India time
+
+permissions:
+  contents: write
+
+concurrency:
+  group: evaluate
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -r requirements.txt
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ hashFiles('agent/settings.py') }}
+
+      - name: Unit tests first
+        run: pytest -q
+
+      - name: Run the 40-question test
+        env:
+          ANTHROPIC_API_KEY: ${{ inputs.engine == 'claude' && secrets.ANTHROPIC_API_KEY || '' }}
+        run: python agent/build_all.py --test
+
+      - name: Publish the results
+        run: |
+          git config user.name "Aditya Khetarpal"
+          git config user.email "80028073+AdityaKhetarpal@users.noreply.github.com"
+          git add data/test_report.json web/public/data/eval.json
+          if git diff --cached --quiet; then echo "Nothing changed."; exit 0; fi
+          git commit -m "Test results $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push
