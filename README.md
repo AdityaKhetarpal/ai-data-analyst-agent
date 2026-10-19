@@ -4,6 +4,8 @@ Ask a business question in plain English. The agent writes the SQL, checks that 
 
 **Live site:** _add your Vercel link here_ · **Test results:** see the *Test results* page or [`data/test_report.json`](data/test_report.json)
 
+**Latest test (free Qwen2.5-Coder-1.5B, no paid AI):** 57.5% execution accuracy on 40 business questions (easy 9/10, medium 13/23, hard 1/7). 90% of queries ran without error, 1 answer was saved by self-correction, and it asked back on 2 of 5 vague questions. Every miss is listed on the results page.
+
 ## What it shows
 
 | Skill | Where |
