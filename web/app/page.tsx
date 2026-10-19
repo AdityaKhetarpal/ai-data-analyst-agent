@@ -13,14 +13,14 @@ export default function Home() {
         <p className="eyebrow-chip">text-to-SQL agent · read-only · self-correcting</p>
         <h1>Ask the data a question. Get the SQL, the answer and the chart.</h1>
         <p className="lead">
-          An AI agent for an Indian online shop&apos;s database (12,000 orders, Jan 2025 to Sep 2026). It writes the SQL,
-          <strong> checks it is safe</strong>, runs it on a <strong>read-only</strong> copy, <strong>fixes its own errors</strong>,
+          An analyst agent for an Indian online shop&apos;s database (12,000 orders, Jan 2025 to Sep 2026). Ask in plain English:
+          it writes the SQL, <strong>checks it is safe</strong>, runs it on a <strong>read-only</strong> copy, <strong>fixes its own errors</strong>,
           and asks you back when a question is too vague. Every answer shows the exact SQL, so you can check it.
         </p>
         <Kpis s={r.summary} />
         <PipelineStrip />
       </div></section>
-      <div className="wrap"><AskPanel report={r} /></div>
+      <div className="wrap"><AskPanel /></div>
     </>
   );
 }

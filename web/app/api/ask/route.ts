@@ -1,17 +1,21 @@
-// POST /api/ask -> the agent answers a question live (only if ANTHROPIC_API_KEY is set in Vercel).
-// GET  /api/ask -> whether live mode is on. The key stays on the server; the browser never sees it.
-import Anthropic from "@anthropic-ai/sdk";
-import { ask, type Writer } from "@/lib/agent";
+// POST /api/ask -> answers a question live. Keys (if any) stay on the server; the browser never sees them.
+//   1. the query planner answers common questions (metric + breakdown + filters + period) directly, using the business definitions
+//   2. anything else goes to the AI agent (write SQL -> check -> run -> fix up to 2 times), if an AI is configured
+//   3. vague questions get a clarifying question back
+import { ask } from "@/lib/agent";
+import { checkSql } from "@/lib/check";
 import { openShop, runOn } from "@/lib/db";
+import { plan } from "@/lib/planner";
+import { pickChart, summarise } from "@/lib/agent";
+import { serverWriter } from "@/lib/writers";
 import prompt from "@/public/data/prompt.json";
-import type { Message, PromptFile } from "@/lib/types";
+import type { AgentResult, PromptFile } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
-const MODEL = "claude-haiku-5-5";
 
-const LIMIT = 8;                       // questions per visitor...
-const WINDOW_MS = 10 * 60 * 1000;      // ...per 10 minutes; the provider's monthly spend cap is the hard stop
+const LIMIT = 20;                      // AI questions per visitor...
+const WINDOW_MS = 10 * 60 * 1000;      // ...per 10 minutes (planner answers are not limited)
 const hits = new Map<string, number[]>();
 function allowed(ip: string) {
   const now = Date.now();
@@ -21,29 +25,41 @@ function allowed(ip: string) {
   return true;
 }
 
+const HELP = "I couldn't work that one out. Try naming a measure (revenue, orders, units, customers, average order value, return or cancellation rate), " +
+  "a breakdown (by category, city, state, brand, product, payment method, segment or month) and a period (last month, Q2 2026, 2025).";
+
 export async function GET() {
-  return Response.json({ live: Boolean(process.env.ANTHROPIC_API_KEY), model: MODEL });
+  return Response.json({ live: true });
 }
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
   const question = typeof body?.question === "string" ? body.question.trim() : "";
   if (question.length < 3 || question.length > 400) return Response.json({ error: "Ask a question between 3 and 400 characters." }, { status: 400 });
-  if (!process.env.ANTHROPIC_API_KEY) return Response.json({ error: "Live mode is off on this deployment." }, { status: 503 });
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  if (!allowed(ip)) return Response.json({ error: "Too many questions. Try again in a few minutes." }, { status: 429 });
 
-  const client = new Anthropic();
-  const write: Writer = async (system: string, messages: Message[]) => {
-    const r = await client.messages.create({ model: MODEL, max_tokens: 700, temperature: 0, system, messages });
-    return r.content.map((b) => (b.type === "text" ? b.text : "")).join("");
-  };
+  const db = await openShop();
+  const run = runOn(db);
+  const p = plan(question);
+
+  if (p.kind === "sql") {
+    try {
+      const table = run(checkSql(p.sql, (prompt as PromptFile).row_limit));
+      const result: AgentResult = { type: "answer", question, sql: p.sql, table, answer: summarise(table), chart: pickChart(table), attempts: [{ sql: p.sql, error: null }], source: "live" };
+      return Response.json(result);
+    } catch (err) {
+      console.error("[ask] planner query failed:", err);   // fall through to the AI agent
+    }
+  }
+  if (p.kind === "clarify") return Response.json({ type: "clarify", question, clarify: p.question, attempts: [], source: "live" } satisfies AgentResult);
+
+  const write = serverWriter();
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
+  if (!write) return Response.json({ type: "clarify", question, clarify: HELP, attempts: [], source: "live" } satisfies AgentResult);
+  if (!allowed(ip)) return Response.json({ error: "Too many questions. Try again in a few minutes." }, { status: 429 });
   try {
-    const db = await openShop();
-    const result = await ask(question, write, runOn(db), prompt as PromptFile);
-    return Response.json({ ...result, source: "live", engine: `Claude (${MODEL})` });
+    return Response.json({ ...(await ask(question, write, run, prompt as PromptFile)), source: "live" });
   } catch (err) {
-    console.error("[ask] failed:", err);
-    return Response.json({ error: "The AI is unavailable right now. Try a tested question below." }, { status: 502 });
+    console.error("[ask] AI failed:", err);
+    return Response.json({ type: "clarify", question, clarify: HELP, attempts: [], source: "live" } satisfies AgentResult);
   }
 }

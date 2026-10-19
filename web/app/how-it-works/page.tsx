@@ -27,7 +27,7 @@ function Step({ n, title, file, children }: { n: number; title: string; file: st
 export default function HowPage() {
   const p = prompt as PromptFile;
   const r = report as unknown as Report;
-  const fixed = r.records.find((q) => q.fixed) ?? r.records.find((q) => q.correct && q.chart);
+  const fixed = r.records.find((q) => q.fixed && q.correct) ?? r.records.find((q) => q.correct && q.chart);
   const schemaLines = p.system.split("\n");
   const start = schemaLines.findIndex((l) => l.startsWith("TABLE orders"));
   const glossary = schemaLines.filter((l) => l.startsWith("- ") && /Revenue|Return rate|Today/.test(l));
@@ -71,8 +71,9 @@ export default function HowPage() {
             <ul className="list"><li><code>DELETE FROM orders</code> → only SELECT queries are allowed</li><li><code>SELECT * FROM sales</code> → unknown table &apos;sales&apos;. The tables are: customers, order_items, orders, products</li><li><code>SELECT 1; DROP TABLE orders</code> → write exactly one statement</li></ul>
           </Step>
 
-          <Step n={6} title="The AI that writes the SQL" file="step6_ai.py">
-            <p>Two options, same code around them: <strong>Claude</strong> when an API key is set, or a <strong>free open-source coding model</strong> (Qwen2.5-Coder, 1.5 billion parameters) that runs on an ordinary computer. The weekly test on GitHub uses the free one, so the score costs nothing.</p>
+          <Step n={6} title="Who writes the SQL" file="step6_ai.py">
+            <p>A large language model receives the instructions from steps 3 and 4 plus the question, and replies with one SQL query (or a clarifying question). Everything around it is ordinary code, so the model can be swapped with one setting without changing the agent.</p>
+            <p>On this website, common questions (a measure, a breakdown, filters and a period, like &ldquo;revenue by city in Q2 2026&rdquo;) are first handled by a built-in <strong>query planner</strong> that writes the SQL directly from the same business definitions. It answers instantly and the same way every time. Anything it can&apos;t read with confidence goes to the AI.</p>
           </Step>
 
           <Step n={7} title="The agent loop: run, read the error, fix, answer" file="step7_agent.py">
@@ -102,7 +103,7 @@ export default function HowPage() {
             <ul className="list">
               <li>The data is generated sample data, not a real company.</li>
               <li>The test checks the result table, not whether the one-line wording is perfect.</li>
-              <li>A small free model makes more mistakes than Claude; mistakes are shown on the results page.</li>
+              <li>The AI still gets some harder questions wrong; every miss is shown on the results page.</li>
             </ul>
           </div>
         </section>

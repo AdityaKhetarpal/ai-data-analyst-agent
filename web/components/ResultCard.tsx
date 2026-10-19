@@ -11,8 +11,8 @@ export default function ResultCard({ r, verdict, latest }: { r: AgentResult; ver
       <p className="result-q">{r.question}</p>
       <div className="result-meta">
         {r.source && <span className="tag">{r.source === "live" ? "live answer" : "from the test run"}</span>}
-        {r.engine && <span className="tag">{r.engine}</span>}
-        {r.type === "answer" && <span className="tag">{r.attempts.length} {r.attempts.length === 1 ? "try" : "tries"}</span>}
+        {r.type === "answer" && <span className="tag">read-only · SQL checked</span>}
+        {r.type === "answer" && r.attempts.length > 1 && <span className="tag">{r.attempts.length} tries</span>}
         {fixes > 0 && r.type === "answer" && <span className="tag tag-ok">fixed its own error</span>}
         {r.type === "clarify" && <span className="tag">asked a question back</span>}
         {r.type === "failed" && <span className="tag tag-refused">couldn&apos;t answer</span>}

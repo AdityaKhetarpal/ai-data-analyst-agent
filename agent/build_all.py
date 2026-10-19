@@ -29,6 +29,17 @@ def export_for_website():
         count = int(step2_read_only.run_query(f"SELECT COUNT(*) AS n FROM {table}", con).iloc[0, 0])
         tables[table] = {"rows": count, "columns": list(rows.columns), "sample": rows.astype(object).values.tolist()}
     (out / "tables.json").write_text(json.dumps(tables, indent=1, ensure_ascii=False, default=str))
+    distinct = lambda sql: step2_read_only.run_query(sql, con).iloc[:, 0].tolist()
+    (out / "vocab.json").write_text(json.dumps({                   # the website's query planner recognises these names
+        "category": distinct("SELECT DISTINCT category FROM products ORDER BY 1"),
+        "brand": distinct("SELECT DISTINCT brand FROM products ORDER BY 1"),
+        "product_name": distinct("SELECT DISTINCT product_name FROM products ORDER BY 1"),
+        "city": distinct("SELECT DISTINCT city FROM customers ORDER BY 1"),
+        "state": distinct("SELECT DISTINCT state FROM customers ORDER BY 1"),
+        "segment": distinct("SELECT DISTINCT segment FROM customers ORDER BY 1"),
+        "payment_method": distinct("SELECT DISTINCT payment_method FROM orders ORDER BY 1"),
+        "status": distinct("SELECT DISTINCT status FROM orders ORDER BY 1"),
+    }, indent=1, ensure_ascii=False))
     report = json.loads(settings.REPORT.read_text()) if settings.REPORT.exists() else {"summary": None, "records": [], "vague": []}
     (out / "eval.json").write_text(json.dumps(report, ensure_ascii=False, default=str))
     print("website files written to", out)

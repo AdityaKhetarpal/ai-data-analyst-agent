@@ -1,5 +1,5 @@
 // Website version of step 7: write SQL -> check -> run -> fix (up to 2 times) -> answer. Same logic as agent/step7_agent.py.
-import { checkSql } from "./check";
+import { checkSql, COLUMNS } from "./check";
 import type { AgentResult, Attempt, Cell, Chart, Message, PromptFile, Table } from "./types";
 
 export type Writer = (system: string, messages: Message[]) => Promise<string>;
@@ -16,6 +16,7 @@ export function readReply(text: string): { kind: "clarify" | "sql"; content: str
 export async function ask(question: string, write: Writer, run: Runner, prompt: PromptFile): Promise<AgentResult> {
   let messages: Message[] = [...prompt.examples, { role: "user", content: question }];
   const attempts: Attempt[] = [];
+  let warned = false;   // the business-rule warning is given at most once
   for (let attempt = 0; attempt <= prompt.max_fixes; attempt++) {
     const reply = await write(prompt.system, messages);
     const { kind, content } = readReply(reply);
@@ -25,16 +26,35 @@ export async function ask(question: string, write: Writer, run: Runner, prompt: 
       const table = run(sql);
       if (!table.rows.length && attempt < prompt.max_fixes)
         throw new Error("the query ran but returned no rows. Check text values (they are case-sensitive) and date filters. If no rows really is the right answer, return the same query again.");
+      const problem = businessCheck(content);
+      if (problem && !warned && attempt < prompt.max_fixes) { warned = true; throw new Error(problem); }
       attempts.push({ sql: content, error: null });
       return { type: "answer", question, sql: content, table, answer: summarise(table), chart: pickChart(table), attempts };
     } catch (err) {
-      const error = err instanceof Error ? err.message : String(err);
+      const error = explainError(err instanceof Error ? err.message : String(err));
       attempts.push({ sql: content, error });
       messages = [...messages, { role: "assistant", content: reply },
-        { role: "user", content: `That query failed: ${error}\nFix it. Reply with only the corrected SQL.` }];
+        { role: "user", content: `That query has a problem: ${error}\nFix it. Reply with only the corrected SQL.` }];
     }
   }
   return { type: "failed", question, attempts, answer: `I couldn't write a working query after ${attempts.length} tries. Last error: ${attempts.at(-1)?.error}` };
+}
+
+// ---------- extra help for self-correction (same as agent/step5_check_sql.py) ----------
+export function explainError(message: string): string {
+  const m = message.match(/no such column: (?:\w+\.)?(\w+)/);
+  if (!m) return message;
+  const column = m[1].toLowerCase();
+  const homes = Object.entries(COLUMNS).filter(([, cols]) => cols.includes(column)).map(([t]) => t);
+  return homes.length ? `${message}. Hint: '${column}' is a column of ${homes.join(" and ")}; join that table and use its alias.`
+    : `${message}. Hint: there is no column called '${column}'. Use only the columns listed in the schema.`;
+}
+
+export function businessCheck(sql: string): string | null {
+  const s = sql.toLowerCase();
+  if (s.includes("unit_price_inr") && s.includes("sum(") && !s.includes("status"))
+    return "this looks like revenue but it doesn't filter orders by status. Revenue only counts orders with status IN ('delivered', 'shipped'): join orders and add that filter. If this is not revenue, return the same query.";
+  return null;
 }
 
 // ---------- result -> words and chart (same rules as Python) ----------
@@ -44,7 +64,8 @@ export const looksLikeTime = (vals: Cell[]) => vals.every((v) => /^\d{4}(-\d{2})
 
 export function label(col: string) {
   const s = col.replace(/_inr/g, "").replace(/_pct/g, " %").replace(/_/g, " ").trim();
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  return (s.charAt(0).toUpperCase() + s.slice(1)).replace(/\bq([1-4])\b/g, "Q$1").replace(/\by(20\d\d)\b/g, "$1")
+    .replace(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/g, (m) => m[0].toUpperCase() + m.slice(1));
 }
 
 export function fmt(v: Cell, col = ""): string {

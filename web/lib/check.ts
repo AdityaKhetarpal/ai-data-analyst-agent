@@ -1,6 +1,12 @@
 // Website version of step 5: check SQL before running it. (The Python agent uses the sqlglot parser;
 // here a simpler check is enough because the site runs queries on its own in-memory COPY of the database.)
-export const TABLES = ["customers", "products", "orders", "order_items"];
+export const COLUMNS: Record<string, string[]> = {
+  customers: ["customer_id", "name", "city", "state", "segment", "signup_date"],
+  products: ["product_id", "product_name", "category", "brand", "list_price_inr"],
+  orders: ["order_id", "customer_id", "order_date", "delivery_date", "status", "payment_method"],
+  order_items: ["order_item_id", "order_id", "product_id", "quantity", "unit_price_inr", "discount_pct"],
+};
+export const TABLES = Object.keys(COLUMNS);
 const BLOCKED = /\b(insert|update|delete|drop|create|alter|attach|detach|pragma|replace|vacuum|reindex|analyze|begin|commit|rollback|savepoint|release)\b/i;
 
 /** Remove 'text', "names" and -- comments so keywords inside them are ignored. */

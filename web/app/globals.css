@@ -275,7 +275,7 @@ td.num, th.num { text-align: right; white-space: nowrap; font-family: var(--mono
 .chip[aria-pressed="true"] { border-color: var(--accent); color: var(--ink); background: var(--accent-soft); }
 
 .result-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; margin-top: 14px; }
-@media (max-width: 860px) { .result-grid { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .result-grid { grid-template-columns: minmax(0, 1fr); } }
 .answer-big { font-size: 1.12rem; font-weight: 600; line-height: 1.5; }
 .clarify-box { margin-top: 12px; padding: 14px 16px; border-radius: 12px; background: #fff5e3; color: #6b4300; border: 1px solid #f3d29c; }
 @media (prefers-color-scheme: dark) { .clarify-box { background: #2c2210; color: #f5d59a; border-color: #5c4519; } }

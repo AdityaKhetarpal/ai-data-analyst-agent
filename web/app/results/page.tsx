@@ -30,7 +30,7 @@ export default function ResultsPage() {
             <div className="stat"><p className="stat-label">Saved by self-correction</p><p className="stat-value">{s.fixed_by_retry}</p><p className="stat-note">wrong first, right after seeing the error</p></div>
             <div className="stat"><p className="stat-label">Vague questions asked back</p><p className="stat-value">{s.vague_asked_back.replace(" of ", "/")}</p><p className="stat-note">instead of guessing</p></div>
           </div>
-          <p className="note">AI: {s.engine} · run on {s.run_date} · {s.ran_without_error_pct}% of queries ran without an error.</p>
+          <p className="note">Last run on {s.run_date} · {s.ran_without_error_pct}% of queries ran without an error · misses are shown next to the answer key.</p>
 
           <section className="section panel">
             <div className="panel-head"><h2>By difficulty</h2><span className="muted">share answered right</span></div>

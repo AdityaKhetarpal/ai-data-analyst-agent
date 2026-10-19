@@ -46,8 +46,22 @@ cd web && npm install && npm run dev       # the website on http://localhost:300
 
 The **Evaluate** GitHub Action runs the 40-question test every Monday with the free model and publishes the results to the website. Run it by hand from the Actions tab and choose `claude` to use Claude instead (needs the repository secret `ANTHROPIC_API_KEY`).
 
+## The website answers live, with no paid AI
+
+1. **Query planner** (`web/lib/planner.ts`): most business questions are a measure + breakdown + filters + period
+   ("revenue by city in Q2 2026", "top 5 products by units last month", "Q3 2026 vs Q3 2025 revenue growth").
+   The planner reads those and writes the SQL straight from the same business definitions the AI gets. It's instant,
+   free and consistent, and a test checks that it never gives a wrong answer to the 40 known questions.
+   Vague questions get a clarifying question back.
+2. **AI agent** for everything else, the same loop as step 7 (write → check → run → fix ≤2 times), using whichever AI is configured:
+   - `LLM_API_KEY` for any OpenAI-compatible API. The default is Groq's free tier (`llama-3.3-70b-versatile`). For Google Gemini's free tier, set
+     `LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai` and `LLM_MODEL=gemini-2.5-flash`.
+   - or `ANTHROPIC_API_KEY` for Claude.
+
 ## Deploy (Vercel)
 
-Import the repo, set **Root Directory** to `web`, deploy. Optional: add `ANTHROPIC_API_KEY` as an environment variable to turn on live answers (8 questions per visitor per 10 minutes). Without it, the site shows the agent's real test runs and the SQL playground still works.
+Import the repo, set **Root Directory** to `web`, deploy. To let the AI handle questions the planner can't, add a free key as the
+environment variable `LLM_API_KEY` (e.g. from console.groq.com, no card needed), then redeploy. The same key can go into the GitHub
+secret `LLM_API_KEY` to run the 40-question test with it (Actions → Evaluate → engine `api`).
 
 Keys live only in Vercel / GitHub secrets, never in the code.
