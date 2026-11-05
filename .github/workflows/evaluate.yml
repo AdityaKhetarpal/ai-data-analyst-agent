@@ -59,5 +59,14 @@ jobs:
           git add data/test_report.json web/public/data/eval.json
           if git diff --cached --quiet; then echo "Nothing changed."; exit 0; fi
           git commit -m "Test results $(date -u +%Y-%m-%d)"
-          git pull --rebase origin main
-          git push
+          # the rebuild can leave other files slightly different (e.g. the SQLite file on a newer runner);
+          # they are not meant to be published, so set them aside before syncing with GitHub
+          git stash push --include-untracked --message "not published" || true
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "Published."; exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            echo "Push failed (attempt $attempt), retrying in 20 seconds..."; sleep 20
+          done
+          echo "Could not publish the results after 3 attempts."; exit 1
