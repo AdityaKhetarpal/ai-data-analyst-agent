@@ -2,7 +2,7 @@
 
 Ask a business question in plain English. The agent writes the SQL, checks that it's safe, runs it on a **read-only** database, **fixes its own errors**, and answers with a short sentence, a table and a chart. The SQL is always shown. If a question is too vague, it asks you back instead of guessing.
 
-**Live site:** _add your Vercel link here_ · **Test results:** see the *Test results* page or [`data/test_report.json`](data/test_report.json)
+**Live site:** [ai-data-analyst-agent-ten.vercel.app](https://ai-data-analyst-agent-ten.vercel.app/) · **Test results:** see the *Test results* page or [`data/test_report.json`](data/test_report.json)
 
 **Latest test (free open-source Qwen2.5-Coder-3B on GitHub's CPU, no paid AI):** **80% execution accuracy on 40 business questions** (easy 9/10, medium 22/23, hard 1/7). 100% of queries ran without error, 2 answers were saved by self-correction, and it asked back on 2 of 5 vague questions. Every miss is listed on the results page.
 
@@ -28,7 +28,7 @@ A generated Indian online shop (fixed random seed, so it's identical every time)
 3. **Describe the database**: tables, columns, example values, and a glossary ("revenue" = delivered/shipped orders, after discount).
 4. **Write the prompt**: rules + description + 5 worked examples (one shows asking back).
 5. **Check the SQL** with `sqlglot`: one statement, SELECT only, known tables, row limit of 200.
-6. **The AI**: Claude if `ANTHROPIC_API_KEY` is set, otherwise the free open-source **Qwen2.5-Coder-1.5B** (runs on a normal CPU, no key).
+6. **The AI**: any OpenAI-compatible API if `LLM_API_KEY` is set (e.g. Groq's free tier), Claude if `ANTHROPIC_API_KEY` is set, otherwise the free open-source **Qwen2.5-Coder-3B** (runs on a normal CPU, no key).
 7. **The agent loop**: write → check → run → if it fails or finds nothing, show the AI the error and retry (up to 2 times) → answer + chart.
 8. **The test**: 40 questions with known-correct SQL (10 easy, 23 medium, 7 hard) + 5 vague ones. Results are compared, not SQL text (lenient: extra columns, names, order and rounding don't count).
 
