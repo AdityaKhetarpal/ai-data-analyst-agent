@@ -5,6 +5,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono"; // numbers, labels and SQL
 import "./globals.css";
 import Nav from "@/components/Nav";
+import SiteMark from "@/components/SiteMark";
 
 export const metadata: Metadata = {
   title: "AI Data Analyst Agent",
@@ -17,7 +18,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <header className="site-header">
           <div className="wrap">
-            <Link href="/" className="site-name"><span className="site-mark" aria-hidden="true">SQL</span>Data Analyst<span className="name-accent">Agent</span></Link>
+            <Link href="/" className="site-name"><SiteMark />Data Analyst<span className="name-accent">Agent</span></Link>
             <Nav />
           </div>
         </header>
