@@ -1,11 +1,17 @@
 // Test results: all 40 questions, what the agent wrote, what the right answer was, and whether they match
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbLd } from "@/lib/seo";
 import type { Metadata } from "next";
 import DataTable from "@/components/DataTable";
 import { Highlight } from "@/components/SqlPane";
 import report from "@/public/data/eval.json";
 import type { Report } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Test results · AI Data Analyst Agent" };
+export const metadata: Metadata = {
+  title: "Test results: execution accuracy on 40 questions",
+  description: "Every one of the 40 test questions with the agent's SQL, the correct answer and whether they match: execution accuracy by difficulty, self-corrections and vague questions.",
+  alternates: { canonical: "/results" },
+};
 
 export default function ResultsPage() {
   const r = report as unknown as Report;
@@ -81,6 +87,7 @@ export default function ResultsPage() {
           </section>
         </>}
       </div>
+      <JsonLd data={breadcrumbLd("Test results", "/results")} />
     </>
   );
 }
