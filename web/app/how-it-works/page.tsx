@@ -1,4 +1,6 @@
 // How it works: the 8 steps of the agent, each with real output from this project
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbLd } from "@/lib/seo";
 import type { Metadata } from "next";
 import ResultCard from "@/components/ResultCard";
 import { Highlight } from "@/components/SqlPane";
@@ -8,7 +10,11 @@ import tables from "@/public/data/tables.json";
 import report from "@/public/data/eval.json";
 import type { PromptFile, Report } from "@/lib/types";
 
-export const metadata: Metadata = { title: "How it works · AI Data Analyst Agent" };
+export const metadata: Metadata = {
+  title: "How the text-to-SQL agent works",
+  description: "How a read-only, self-correcting text-to-SQL agent works, step by step: schema grounding, few-shot examples, sqlglot checks, read-only SQLite locks and the fix-and-retry loop.",
+  alternates: { canonical: "/how-it-works" },
+};
 const CODE = "https://github.com/AdityaKhetarpal/ai-data-analyst-agent/blob/main/agent/";
 
 function Step({ n, title, file, children }: { n: number; title: string; file: string; children: React.ReactNode }) {
@@ -108,6 +114,7 @@ export default function HowPage() {
           </div>
         </section>
       </div>
+      <JsonLd data={breadcrumbLd("How it works", "/how-it-works")} />
     </>
   );
 }
