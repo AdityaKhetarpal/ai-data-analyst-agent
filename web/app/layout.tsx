@@ -6,6 +6,7 @@ import "@fontsource-variable/jetbrains-mono"; // numbers, labels and SQL
 import "./globals.css";
 import Nav from "@/components/Nav";
 import SiteMark from "@/components/SiteMark";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "AI Data Analyst Agent",
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </p>
           </div>
         </footer>
+        <SpeedInsights />
       </body>
     </html>
   );
