@@ -21,7 +21,7 @@
    }
   },
   "vague_asked_back": "2 of 5",
-  "run_date": "2026-11-16"
+  "run_date": "2026-11-23"
  },
  "records": [
   {
@@ -64,7 +64,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 183.0
+   "seconds": 212.5
   },
   {
    "id": "q02",
@@ -106,7 +106,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 47.1
+   "seconds": 81.3
   },
   {
    "id": "q03",
@@ -148,7 +148,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 49.9
+   "seconds": 84.5
   },
   {
    "id": "q04",
@@ -190,7 +190,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 49.4
+   "seconds": 83.5
   },
   {
    "id": "q05",
@@ -236,7 +236,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 53.1
+   "seconds": 86.8
   },
   {
    "id": "q06",
@@ -278,7 +278,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 50.4
+   "seconds": 84.2
   },
   {
    "id": "q07",
@@ -320,7 +320,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 54.1
+   "seconds": 89.4
   },
   {
    "id": "q08",
@@ -362,7 +362,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 50.5
+   "seconds": 84.4
   },
   {
    "id": "q09",
@@ -404,7 +404,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 58.9
+   "seconds": 97.9
   },
   {
    "id": "q10",
@@ -502,7 +502,7 @@
     ],
     "total_rows": 9
    },
-   "seconds": 67.1
+   "seconds": 109.8
   },
   {
    "id": "q11",
@@ -544,7 +544,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 77.3
+   "seconds": 127.6
   },
   {
    "id": "q12",
@@ -586,7 +586,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 78.0
+   "seconds": 122.5
   },
   {
    "id": "q13",
@@ -628,7 +628,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 86.7
+   "seconds": 131.0
   },
   {
    "id": "q14",
@@ -718,7 +718,7 @@
     ],
     "total_rows": 7
    },
-   "seconds": 83.1
+   "seconds": 125.9
   },
   {
    "id": "q15",
@@ -762,7 +762,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 90.1
+   "seconds": 136.1
   },
   {
    "id": "q16",
@@ -844,7 +844,7 @@
     ],
     "total_rows": 5
    },
-   "seconds": 85.9
+   "seconds": 131.7
   },
   {
    "id": "q17",
@@ -930,7 +930,7 @@
     ],
     "total_rows": 5
    },
-   "seconds": 145.9
+   "seconds": 227.9
   },
   {
    "id": "q18",
@@ -974,7 +974,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 85.1
+   "seconds": 129.1
   },
   {
    "id": "q19",
@@ -1084,7 +1084,7 @@
     ],
     "total_rows": 14
    },
-   "seconds": 88.5
+   "seconds": 132.7
   },
   {
    "id": "q20",
@@ -1182,7 +1182,7 @@
     ],
     "total_rows": 9
    },
-   "seconds": 83.8
+   "seconds": 124.1
   },
   {
    "id": "q21",
@@ -1224,7 +1224,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 57.1
+   "seconds": 91.4
   },
   {
    "id": "q22",
@@ -1306,7 +1306,7 @@
     ],
     "total_rows": 5
    },
-   "seconds": 60.0
+   "seconds": 95.6
   },
   {
    "id": "q23",
@@ -1350,7 +1350,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 84.9
+   "seconds": 130.7
   },
   {
    "id": "q24",
@@ -1396,7 +1396,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 125.5
+   "seconds": 202.8
   },
   {
    "id": "q25",
@@ -1438,7 +1438,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 55.6
+   "seconds": 90.9
   },
   {
    "id": "q26",
@@ -1480,7 +1480,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 53.1
+   "seconds": 85.8
   },
   {
    "id": "q27",
@@ -1562,7 +1562,7 @@
     ],
     "total_rows": 5
    },
-   "seconds": 85.8
+   "seconds": 128.4
   },
   {
    "id": "q28",
@@ -1620,7 +1620,7 @@
     ],
     "total_rows": 2
    },
-   "seconds": 83.1
+   "seconds": 124.7
   },
   {
    "id": "q29",
@@ -1662,7 +1662,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 90.3
+   "seconds": 135.3
   },
   {
    "id": "q30",
@@ -1704,7 +1704,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 49.3
+   "seconds": 81.4
   },
   {
    "id": "q31",
@@ -1748,7 +1748,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 59.4
+   "seconds": 94.8
   },
   {
    "id": "q32",
@@ -1790,7 +1790,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 62.6
+   "seconds": 97.6
   },
   {
    "id": "q33",
@@ -1884,7 +1884,7 @@
     ],
     "total_rows": 8
    },
-   "seconds": 59.2
+   "seconds": 94.9
   },
   {
    "id": "q34",
@@ -1959,7 +1959,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 54.7
+   "seconds": 88.2
   },
   {
    "id": "q35",
@@ -2001,7 +2001,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 59.5
+   "seconds": 93.8
   },
   {
    "id": "q36",
@@ -2045,7 +2045,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 70.8
+   "seconds": 106.7
   },
   {
    "id": "q37",
@@ -2111,7 +2111,7 @@
     ],
     "total_rows": 3
    },
-   "seconds": 85.8
+   "seconds": 127.0
   },
   {
    "id": "q38",
@@ -2153,7 +2153,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 95.7
+   "seconds": 140.7
   },
   {
    "id": "q39",
@@ -2195,7 +2195,7 @@
     ],
     "total_rows": 1
    },
-   "seconds": 127.3
+   "seconds": 179.4
   },
   {
    "id": "q40",
@@ -2285,7 +2285,7 @@
     ],
     "total_rows": 7
    },
-   "seconds": 77.2
+   "seconds": 116.3
   }
  ],
  "vague": [
